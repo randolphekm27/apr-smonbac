@@ -1,0 +1,6 @@
+{
+  "name": "Après Mon Bac",
+  "description": "Plateforme web d'orientation d'excellence post-bac pour les bacheliers du Bénin. Explorez les filières, universités publiques, écoles professionnelles, bourses et opportunités d'études.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
