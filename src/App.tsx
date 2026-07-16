@@ -182,7 +182,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAF8] text-[#1A1A1A] flex flex-col justify-between selection:bg-[#F4C430]/30 selection:text-black">
+    <div className="min-h-screen bg-bg-main text-text-main flex flex-col justify-between selection:bg-accent/30 selection:text-black">
       
       {/* Header element */}
       <Header 
@@ -202,7 +202,7 @@ export default function App() {
       />
 
       {/* Main Pages router inside AnimatePresence */}
-      <main className="flex-grow pb-24 md:pb-0">
+      <main className="grow pb-24 md:pb-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activePage}-${selectedUniversityId || ''}-${selectedSchoolId || ''}-${selectedMajorId || ''}`}
@@ -275,7 +275,7 @@ export default function App() {
       </main>
 
       {/* Floating Premium Mobile Navigation Bar */}
-      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-md bg-white/90 backdrop-blur-xl border border-[#1A1A1A]/10 px-3 py-2 rounded-2xl shadow-xl shadow-black/5 flex items-center justify-around gap-1 md:hidden">
+      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-md bg-white/90 backdrop-blur-xl border border-text-main/$1 px-3 py-2 rounded-2xl shadow-xl shadow-black/5 flex items-center justify-around gap-1 md:hidden">
         {[
           { icon: Home, page: 'accueil' as const, label: 'Accueil' },
           { icon: GraduationCap, page: 'universites' as const, label: 'Orientation' },
@@ -300,18 +300,18 @@ export default function App() {
               {isSelected && (
                 <motion.div
                   layoutId="mobileActivePill"
-                  className="absolute inset-0 bg-[#F4C430]/10 rounded-xl -z-10"
+                  className="absolute inset-0 bg-accent/10 rounded-xl -z-10"
                   transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                 />
               )}
 
               <IconComponent 
                 className={`h-5 w-5 transition-transform duration-200 group-active:scale-95 ${
-                  isSelected ? 'text-[#E8B923] stroke-[2.5]' : 'text-black/50 group-hover:text-black'
+                  isSelected ? 'text-accent stroke-$1' : 'text-text-main/50 group-hover:text-black'
                 }`} 
               />
               <span className={`text-[9px] mt-1 font-bold tracking-tight transition-colors ${
-                isSelected ? 'text-black' : 'text-black/40 group-hover:text-black'
+                isSelected ? 'text-black' : 'text-text-main/40 group-hover:text-black'
               }`}>
                 {item.label}
               </span>
@@ -350,13 +350,13 @@ export default function App() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Rechercher une école, filière (ex: informatique)..."
-                  className="w-full bg-transparent text-sm text-[#1A1A1A] placeholder-black/40 outline-none"
+                  className="w-full bg-transparent text-sm text-text-main placeholder-black/40 outline-none"
                   autoFocus
                   id="finder-input"
                 />
                 <button
                   onClick={() => setIsSearchOpen(false)}
-                  className="rounded-full bg-black/5 hover:bg-black/10 p-1.5 text-[#1A1A1A]/60 transition-colors cursor-pointer"
+                  className="rounded-full bg-black/5 hover:bg-black/10 p-1.5 text-text-main/60 transition-colors cursor-pointer"
                   title="Fermer"
                 >
                   <X className="h-4 w-4" />
@@ -367,38 +367,38 @@ export default function App() {
               <div className="max-h-96 overflow-y-auto p-4 space-y-4">
                 {searchResults.length > 0 ? (
                   <div className="space-y-2">
-                    <span className="text-[10px] font-extrabold text-[#E8B923] uppercase tracking-wider pl-2 block">
+                    <span className="text-[10px] font-extrabold text-accent uppercase tracking-wider pl-2 block">
                       Résultats trouvés ({searchResults.length})
                     </span>
                     {searchResults.map((item, idx) => (
                       <button
                         key={idx}
                         onClick={() => handleSelectResult(item.action)}
-                        className="w-full text-left flex items-center justify-between p-3.5 rounded-2xl hover:bg-[#F4C430]/5 hover:text-black border border-transparent hover:border-[#F4C430]/10 transition-all group cursor-pointer"
+                        className="w-full text-left flex items-center justify-between p-3.5 rounded-2xl hover:bg-accent/5 hover:text-black border border-transparent hover:border-accent/10 transition-all group cursor-pointer"
                       >
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             <span className="text-xs font-extrabold text-black">{item.title}</span>
-                            <span className="rounded-md bg-[#F4C430]/10 px-1.5 py-0.5 text-[8px] font-extrabold text-[#E8B923] uppercase tracking-wider">
+                            <span className="rounded-md bg-accent/10 px-1.5 py-0.5 text-[8px] font-extrabold text-accent uppercase tracking-wider">
                               {item.type}
                             </span>
                           </div>
-                          <p className="text-[10px] text-black/50 line-clamp-1 group-hover:text-black/70">
+                          <p className="text-[10px] text-text-main/50 line-clamp-1 group-hover:text-black/70">
                             {item.desc}
                           </p>
                         </div>
-                        <ArrowRight className="h-4 w-4 text-black/30 group-hover:text-black group-hover:translate-x-1 transition-all" />
+                        <ArrowRight className="h-4 w-4 text-text-main/30 group-hover:text-black group-hover:translate-x-1 transition-all" />
                       </button>
                     ))}
                   </div>
                 ) : searchQuery.trim() ? (
                   <div className="text-center py-8 space-y-3">
-                    <div className="h-12 w-12 rounded-full bg-amber-500/10 text-[#E8B923] flex items-center justify-center mx-auto text-lg">
+                    <div className="h-12 w-12 rounded-full bg-accent/10 text-accent flex items-center justify-center mx-auto text-lg">
                       🔎
                     </div>
                     <div>
                       <h4 className="text-sm font-extrabold">Aucun résultat exact</h4>
-                      <p className="text-[11px] text-black/40 mt-1 max-w-xs mx-auto leading-relaxed">
+                      <p className="text-[11px] text-text-main/40 mt-1 max-w-xs mx-auto leading-relaxed">
                         Notre catalogue comprend toutes les universités publiques, instituts et filières d'orientation.
                       </p>
                     </div>
@@ -407,8 +407,8 @@ export default function App() {
                   /* Standard Quick Suggestions when input is empty */
                   <div className="space-y-3">
                     <div className="flex items-center gap-1.5 pl-2 mb-2">
-                      <Sparkles className="h-3.5 w-3.5 text-[#E8B923]" />
-                      <span className="text-[10px] font-extrabold text-black/40 uppercase tracking-wider">
+                      <Sparkles className="h-3.5 w-3.5 text-accent" />
+                      <span className="text-[10px] font-extrabold text-text-main/40 uppercase tracking-wider">
                         Recommandations d'Orientation
                       </span>
                     </div>
@@ -420,15 +420,15 @@ export default function App() {
                           className="w-full text-left flex items-center justify-between p-3 rounded-xl hover:bg-black/5 hover:text-black transition-all group cursor-pointer"
                         >
                           <div className="flex items-center gap-3">
-                            <div className="h-8 w-8 rounded-lg bg-black/5 flex items-center justify-center text-xs group-hover:bg-[#F4C430] group-hover:text-black transition-colors">
+                            <div className="h-8 w-8 rounded-lg bg-black/5 flex items-center justify-center text-xs group-hover:bg-accent group-hover:text-black transition-colors">
                               {item.type === 'Filière' ? <BookOpen className="h-4 w-4" /> : <GraduationCap className="h-4 w-4" />}
                             </div>
                             <div>
                               <span className="text-xs font-bold text-black block">{item.title}</span>
-                              <span className="text-[9px] text-black/40 font-medium line-clamp-1">{item.desc}</span>
+                              <span className="text-[9px] text-text-main/40 font-medium line-clamp-1">{item.desc}</span>
                             </div>
                           </div>
-                          <div className="text-[10px] font-extrabold text-black/30 group-hover:text-black flex items-center gap-0.5">
+                          <div className="text-[10px] font-extrabold text-text-main/30 group-hover:text-black flex items-center gap-0.5">
                             <span>Ouvrir</span>
                             <ExternalLink className="h-3 w-3 shrink-0" />
                           </div>

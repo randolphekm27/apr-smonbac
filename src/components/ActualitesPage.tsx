@@ -110,7 +110,7 @@ Cette mesure vise à protéger les étudiants contre les diplômes non reconnus 
   const easeOutExpo = [0.16, 1, 0.3, 1];
 
   return (
-    <div className="bg-[#FAFAF8] text-[#1A1A1A] py-10 min-h-screen selection:bg-[#F4C430]/30 selection:text-black" id="actualites-page-container">
+    <div className="bg-bg-main text-text-main py-10 min-h-screen selection:bg-accent/30 selection:text-black" id="actualites-page-container">
       <div className="mx-auto max-w-7xl px-6 space-y-12">
         
         {/* Header */}
@@ -121,14 +121,14 @@ Cette mesure vise à protéger les étudiants contre les diplômes non reconnus 
           className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6"
         >
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#F4C430]/10 px-3.5 py-1.5 text-xs font-black text-[#E8B923] uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 rounded-full bg-accent-light px-3.5 py-1.5 text-xs font-black text-accent uppercase tracking-wider">
               <Megaphone className="h-3.5 w-3.5" />
               <span>Actualités Officielles</span>
             </div>
-            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-text-main leading-tight">
               Actualités & Publications
             </h1>
-            <p className="text-sm text-[#1A1A1A]/50 max-w-2xl leading-relaxed font-medium">
+            <p className="text-sm text-text-main/50 max-w-2xl leading-relaxed font-medium">
               Restez informé en temps réel des réformes, des communiqués officiels du Ministère (MESRS), et des opportunités d'études supérieures au Bénin.
             </p>
           </div>
@@ -147,8 +147,8 @@ Cette mesure vise à protéger les étudiants contre les diplômes non reconnus 
               onClick={() => setSelectedCategory(cat.val as any)}
               className={`px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer ${
                 selectedCategory === cat.val
-                  ? 'bg-[#F4C430] text-black shadow-sm'
-                  : 'bg-black/5 hover:bg-black/10 text-black/60'
+                  ? 'bg-accent text-black shadow-sm font-extrabold'
+                  : 'bg-black/5 hover:bg-accent/10 hover:text-black text-text-main/60'
               }`}
             >
               {cat.label}
@@ -157,88 +157,93 @@ Cette mesure vise à protéger les étudiants contre les diplômes non reconnus 
         </div>
 
         {/* News Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filteredNews.map(item => (
-            <motion.div 
-              layout
-              whileHover={{ y: -4, borderColor: 'rgba(244,196,48,0.3)', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.05)' }}
-              key={item.id}
-              className="bg-white border border-black/5 rounded-[2.5rem] overflow-hidden shadow-sm transition-all duration-300 flex flex-col justify-between"
-            >
-              {/* Image banner */}
-              <div className="relative h-48 sm:h-56 bg-neutral-100 overflow-hidden shrink-0">
-                <img 
-                  src={item.image} 
-                  alt={item.title} 
-                  className="h-full w-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-                <span className="absolute top-4 left-4 bg-black/75 text-white backdrop-blur-sm text-[9px] font-black px-3 py-1.5 rounded-xl uppercase tracking-wider">
-                  {item.categoryLabel}
-                </span>
-
-                {item.badge && (
-                  <span className="absolute top-4 right-4 bg-[#F4C430] text-black font-black text-[9px] px-3 py-1.5 rounded-xl uppercase tracking-wider shadow-md">
-                    {item.badge}
-                  </span>
-                )}
-              </div>
-
-              {/* Content area */}
-              <div className="p-6 md:p-8 space-y-4 flex-grow flex flex-col justify-between">
-                <div className="space-y-3">
-                  {/* Meta info */}
-                  <div className="flex items-center gap-3 text-[10px] text-[#1A1A1A]/40 font-bold uppercase tracking-wider">
-                    <span className="flex items-center gap-1.5">
-                      <Calendar className="h-3.5 w-3.5 text-[#E8B923]" />
-                      {item.date}
-                    </span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1.5">
-                      <Clock className="h-3.5 w-3.5 text-[#E8B923]" />
-                      {item.time}
-                    </span>
-                  </div>
-
-                  <h3 className="text-base font-black text-[#1A1A1A] hover:text-[#E8B923] transition-colors leading-snug">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-xs text-[#1A1A1A]/60 leading-relaxed line-clamp-3 font-medium">
-                    {item.desc}
-                  </p>
-                </div>
-
-                {/* Card Footer actions */}
-                <div className="pt-5 border-t border-black/5 flex items-center justify-between mt-5">
-                  <span className="text-[10px] font-bold text-[#1A1A1A]/40 uppercase tracking-wider">
-                    Par <span className="text-black font-black">{item.author}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative min-h-[300px]">
+          <AnimatePresence mode="popLayout">
+            {filteredNews.map(item => (
+              <motion.div 
+                key={item.id}
+                layout
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.97 }}
+                transition={{ duration: 0.3 }}
+                className="group card-premium overflow-hidden transition-all duration-300 flex flex-col justify-between"
+              >
+                {/* Image banner */}
+                <div className="relative h-48 sm:h-56 bg-neutral-100 overflow-hidden shrink-0">
+                  <img 
+                    src={item.image} 
+                    alt={item.title} 
+                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    referrerPolicy="no-referrer"
+                  />
+                  <span className="absolute top-4 left-4 bg-black/75 text-white backdrop-blur-sm text-[9px] font-black px-3 py-1.5 rounded-xl uppercase tracking-wider">
+                    {item.categoryLabel}
                   </span>
 
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => shareNews(item.id, item.title)}
-                      className="p-2.5 rounded-xl bg-[#FAFAF8] hover:bg-[#F4C430]/10 hover:text-black text-black/60 transition-all cursor-pointer relative"
-                      title="Partager l'actualité"
-                    >
-                      {copiedId === item.id ? (
-                        <Check className="h-4 w-4 text-emerald-500 stroke-[3]" />
-                      ) : (
-                        <Share2 className="h-4 w-4" />
-                      )}
-                    </button>
-                    <button
-                      onClick={() => setSelectedNews(item)}
-                      className="flex items-center gap-1.5 bg-[#F4C430]/10 hover:bg-[#F4C430] hover:text-black text-[#E8B923] px-4 py-2.5 rounded-xl text-xs font-black transition-all cursor-pointer uppercase tracking-wider"
-                    >
-                      <span>Lire</span>
-                      <ArrowRight className="h-3 w-3 stroke-[2.5]" />
-                    </button>
+                  {item.badge && (
+                    <span className="absolute top-4 right-4 bg-accent text-black font-black text-[9px] px-3 py-1.5 rounded-xl uppercase tracking-wider shadow-md">
+                      {item.badge}
+                    </span>
+                  )}
+                </div>
+
+                {/* Content area */}
+                <div className="p-6 md:p-8 space-y-4 grow flex flex-col justify-between">
+                  <div className="space-y-3">
+                    {/* Meta info */}
+                    <div className="flex items-center gap-3 text-[10px] text-text-main/40 font-bold uppercase tracking-wider">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="h-3.5 w-3.5 text-accent" />
+                        {item.date}
+                      </span>
+                      <span>•</span>
+                      <span className="flex items-center gap-1.5">
+                        <Clock className="h-3.5 w-3.5 text-accent" />
+                        {item.time}
+                      </span>
+                    </div>
+
+                    <h3 className="text-base font-black text-text-main group-hover:text-accent transition-colors leading-snug">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-xs text-text-main/60 leading-relaxed line-clamp-3 font-medium">
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  {/* Card Footer actions */}
+                  <div className="pt-5 border-t border-black/5 flex items-center justify-between mt-5">
+                    <span className="text-[10px] font-bold text-text-main/40 uppercase tracking-wider">
+                      Par <span className="text-black font-black">{item.author}</span>
+                    </span>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => shareNews(item.id, item.title)}
+                        className="p-2.5 rounded-xl bg-bg-main hover:bg-accent/10 hover:text-black text-black/60 transition-all cursor-pointer relative border border-black/5"
+                        title="Partager l'actualité"
+                      >
+                        {copiedId === item.id ? (
+                          <Check className="h-4 w-4 text-emerald-500 stroke-$1" />
+                        ) : (
+                          <Share2 className="h-4 w-4" />
+                        )}
+                      </button>
+                      <button
+                        onClick={() => setSelectedNews(item)}
+                        className="flex items-center gap-1.5 bg-accent/10 hover:bg-accent hover:text-black text-accent px-4 py-2.5 rounded-xl text-xs font-black transition-all cursor-pointer uppercase tracking-wider"
+                      >
+                        <span>Lire</span>
+                        <ArrowRight className="h-3 w-3 stroke-$1" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
         {/* Elegant Modal for reading news */}
@@ -260,7 +265,7 @@ Cette mesure vise à protéger les étudiants contre les diplômes non reconnus 
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 15 }}
                 transition={{ type: 'spring', duration: 0.5 }}
-                className="bg-white rounded-[2.5rem] border border-black/5 w-full max-w-2xl overflow-hidden shadow-2xl relative z-10 max-h-[90vh] flex flex-col"
+                className="bg-bg-main rounded-[2.5rem] border border-black/5 w-full max-w-2xl overflow-hidden shadow-2xl relative z-10 max-h-[90vh] flex flex-col"
               >
                 {/* Close Button */}
                 <button
@@ -278,9 +283,9 @@ Cette mesure vise à protéger les étudiants contre les diplômes non reconnus 
                     className="h-full w-full object-cover"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent" />
                   <div className="absolute bottom-6 left-6 right-6 space-y-2">
-                    <span className="bg-[#F4C430] text-black text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider">
+                    <span className="bg-accent text-black text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider">
                       {selectedNews.categoryLabel}
                     </span>
                     <h3 className="text-white text-base md:text-lg font-black leading-tight drop-shadow-sm">
@@ -290,14 +295,14 @@ Cette mesure vise à protéger les étudiants contre les diplômes non reconnus 
                 </div>
 
                 {/* Body Content in modal */}
-                <div className="p-6 md:p-8 space-y-4 overflow-y-auto text-xs text-[#1A1A1A]/70 leading-relaxed font-medium">
-                  <div className="flex items-center gap-3 text-[10px] text-[#1A1A1A]/40 font-bold uppercase tracking-wider">
+                <div className="p-6 md:p-8 space-y-4 overflow-y-auto text-xs text-text-main/70 leading-relaxed font-medium">
+                  <div className="flex items-center gap-3 text-[10px] text-text-main/40 font-bold uppercase tracking-wider">
                     <span>Par {selectedNews.author}</span>
                     <span>•</span>
                     <span>{selectedNews.date}</span>
                   </div>
 
-                  <p className="whitespace-pre-line font-medium text-sm text-[#1A1A1A]/80 leading-relaxed pt-2">
+                  <p className="whitespace-pre-line font-medium text-sm text-text-main/80 leading-relaxed pt-2">
                     {selectedNews.fullContent || selectedNews.desc}
                   </p>
                 </div>

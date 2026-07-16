@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronRight, Home } from 'lucide-react';
-import { UNIVERSITIES, SCHOOLS, MAJORS } from '../data';
+import { supabase } from '../lib/supabase';
 
 type AppActivePage = 'accueil' | 'universites' | 'university-detail' | 'school-detail' | 'filiere-detail' | 'concours' | 'bourses' | 'stages' | 'actualites';
 
@@ -21,6 +21,28 @@ export default function Breadcrumb({
   majorId,
   setNavigationState
 }: BreadcrumbProps) {
+  const [univName, setUnivName] = React.useState<string>('');
+  const [schoolName, setSchoolName] = React.useState<string>('');
+  const [majorName, setMajorName] = React.useState<string>('');
+
+  React.useEffect(() => {
+    async function fetchNames() {
+      if (universityId) {
+        const { data } = await supabase.from('universites').select('nom').eq('slug', universityId).single();
+        if (data) setUnivName(data.nom);
+      }
+      if (schoolId) {
+        const { data } = await supabase.from('ecoles').select('nom').eq('slug', schoolId).single();
+        if (data) setSchoolName(data.nom);
+      }
+      if (majorId) {
+        const { data } = await supabase.from('filieres').select('nom').eq('slug', majorId).single();
+        if (data) setMajorName(data.nom);
+      }
+    }
+    fetchNames();
+  }, [universityId, schoolId, majorId]);
+
   if (activePage === 'accueil') return null;
 
   // Helper to transition state in App
@@ -32,25 +54,21 @@ export default function Breadcrumb({
     }
   };
 
-  const university = universityId ? UNIVERSITIES.find(u => u.id === universityId) : null;
-  const school = schoolId ? SCHOOLS.find(s => s.id === schoolId) : null;
-  const major = majorId ? MAJORS.find(m => m.id === majorId) : null;
-
   return (
-    <div className="bg-[#FAFAF8] py-4 border-b border-[#1A1A1A]/5" id="breadcrumb-navigation-container">
+    <div className="bg-bg-main py-4 border-b border-text-main/$1" id="breadcrumb-navigation-container">
       <div className="mx-auto max-w-7xl px-6">
-        <nav className="flex items-center gap-2 text-xs font-bold text-[#1A1A1A]/50 flex-wrap">
+        <nav className="flex items-center gap-2 text-xs font-bold text-text-main/50 flex-wrap">
           {/* Home Node */}
           <button
             onClick={() => navigateTo('accueil')}
             className="flex items-center gap-1 hover:text-black transition-colors cursor-pointer"
             id="breadcrumb-home"
           >
-            <Home className="h-3.5 w-3.5 text-[#E8B923]" />
+            <Home className="h-3.5 w-3.5 text-accent" />
             <span>Accueil</span>
           </button>
 
-          <ChevronRight className="h-3.5 w-3.5 text-[#1A1A1A]/30 shrink-0" />
+          <ChevronRight className="h-3.5 w-3.5 text-text-main/30 shrink-0" />
 
           {/* Actualités / Concours / Bourses / Stages specific breadcrumbs */}
           {activePage === 'actualites' && (
@@ -77,57 +95,57 @@ export default function Breadcrumb({
                 }`}
                 id="breadcrumb-orientation-root"
               >
-                Mon Orientation
+                Orientation
               </button>
 
               {/* Level 1: University Detail */}
-              {university && (
+              {universityId && univName && (
                 <>
-                  <ChevronRight className="h-3.5 w-3.5 text-[#1A1A1A]/30 shrink-0" />
+                  <ChevronRight className="h-3.5 w-3.5 text-text-main/30 shrink-0" />
                   <button
-                    onClick={() => navigateTo('university-detail', university.id)}
+                    onClick={() => navigateTo('university-detail', universityId)}
                     className={`hover:text-black transition-colors cursor-pointer ${
                       activePage === 'university-detail' ? 'text-black font-extrabold' : ''
                     }`}
-                    id={`breadcrumb-univ-${university.id}`}
+                    id={`breadcrumb-univ-${universityId}`}
                   >
-                    {university.fullName}
+                    {univName}
                   </button>
                 </>
               )}
 
               {/* Level 2: School Detail */}
-              {school && (
+              {schoolId && schoolName && (
                 <>
-                  <ChevronRight className="h-3.5 w-3.5 text-[#1A1A1A]/30 shrink-0" />
+                  <ChevronRight className="h-3.5 w-3.5 text-text-main/30 shrink-0" />
                   <button
-                    onClick={() => navigateTo('school-detail', school.universityId, school.id)}
+                    onClick={() => navigateTo('school-detail', universityId, schoolId)}
                     className={`hover:text-black transition-colors cursor-pointer ${
                       activePage === 'school-detail' ? 'text-black font-extrabold' : ''
                     }`}
-                    id={`breadcrumb-school-${school.id}`}
+                    id={`breadcrumb-school-${schoolId}`}
                   >
-                    {school.name}
+                    {schoolName}
                   </button>
                 </>
               )}
 
               {/* Level 3: Major Detail (if navigating inside school/university context) */}
-              {major && (
+              {majorId && majorName && (
                 <>
-                  <ChevronRight className="h-3.5 w-3.5 text-[#1A1A1A]/30 shrink-0" />
-                  <span className="text-black font-extrabold" id={`breadcrumb-major-${major.id}`}>
-                    {major.name}
+                  <ChevronRight className="h-3.5 w-3.5 text-text-main/30 shrink-0" />
+                  <span className="text-black font-extrabold" id={`breadcrumb-major-${majorId}`}>
+                    {majorName}
                   </span>
                 </>
               )}
 
               {/* Direct Major Detail (e.g. from general search/explore, without school context) */}
-              {activePage === 'filiere-detail' && !school && major && (
+              {activePage === 'filiere-detail' && !schoolId && majorId && majorName && (
                 <>
-                  <ChevronRight className="h-3.5 w-3.5 text-[#1A1A1A]/30 shrink-0" />
-                  <span className="text-black font-extrabold" id={`breadcrumb-major-direct-${major.id}`}>
-                    {major.name}
+                  <ChevronRight className="h-3.5 w-3.5 text-text-main/30 shrink-0" />
+                  <span className="text-black font-extrabold" id={`breadcrumb-major-direct-${majorId}`}>
+                    {majorName}
                   </span>
                 </>
               )}
