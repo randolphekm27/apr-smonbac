@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Landmark, GraduationCap, ChevronRight, Sparkles } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { University } from '../types';
+import ImageWithFallback from './ImageWithFallback';
 
 type AppActivePage = 'accueil' | 'universites' | 'university-detail' | 'school-detail' | 'filiere-detail' | 'concours' | 'bourses' | 'stages' | 'actualites';
 
@@ -12,7 +13,7 @@ interface UniversitesPageProps {
 }
 
 export default function UniversitesPage({ setActivePage, setNavigationState }: UniversitesPageProps) {
-  const easeOutExpo = [0.16, 1, 0.3, 1];
+  const easeOutExpo = [0.16, 1, 0.3, 1] as const;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -96,7 +97,7 @@ export default function UniversitesPage({ setActivePage, setNavigationState }: U
           className="relative w-full h-64 md:h-80 rounded-[2.5rem] overflow-hidden shadow-2xl border border-white p-2.5 bg-white/40 backdrop-blur-sm"
         >
           <div className="w-full h-full rounded-4xl overflow-hidden relative">
-            <img
+            <ImageWithFallback
               src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=80"
               alt="Bâtiment Universitaire Béninois"
               className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105"
@@ -114,7 +115,7 @@ export default function UniversitesPage({ setActivePage, setNavigationState }: U
                 L'excellence académique à la portée de tous les bacheliers.
               </h2>
               <p className="text-xs text-white/60 leading-relaxed font-medium">
-                Les universités d'Abomey-Calavi, Parakou, Kétou (UNA) et Porto-Novo (UPF) accueillent et forment les futurs cadres, ingénieurs et leaders de notre république avec rigueur et prestige.
+                Les universités d'Abomey-Calavi (UAC), de Parakou (UP), des Sciences, Technologies, Ingénierie et Mathématiques (UNSTIM) et Nationale d'Agriculture (UNA) accueillent et forment les futurs cadres, ingénieurs et leaders de notre république.
               </p>
             </div>
           </div>
@@ -139,11 +140,10 @@ export default function UniversitesPage({ setActivePage, setNavigationState }: U
               >
                 {/* Photo with beautiful overlay */}
                 <div className="h-48 overflow-hidden relative">
-                  <img
-                    src={univ.logo_url || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=800&q=80'}
+                  <ImageWithFallback
+                    src={univ.banner_url || univ.logo_url}
                     alt={univ.nom}
                     className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-                    referrerPolicy="no-referrer"
                   />
                   <div className="absolute top-4 left-4 rounded-xl bg-white/95 backdrop-blur-md px-3.5 py-1.5 text-[10px] font-black text-black shadow-sm tracking-wider uppercase">
                     {univ.nom}
@@ -197,15 +197,15 @@ export default function UniversitesPage({ setActivePage, setNavigationState }: U
           <div className="space-y-1.5 max-w-xl">
             <h4 className="text-sm font-black text-text-main">Vous hésitez encore entre plusieurs universités ?</h4>
             <p className="text-xs text-text-main/50 font-medium leading-relaxed">
-              Explorez le parcours d'excellence "Licence en Informatique" pour voir un exemple concret des matières, débouchés, compétences clés et grilles salariales post-diplôme au Bénin.
+              Explorez la fiche de la "Licence en Métier de l'Informatique" à l'IFRI (UAC) pour voir un exemple concret de matières, de débouchés et de compétences visées.
             </p>
           </div>
-          <motion.button 
+          <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => {
               if (setNavigationState) {
-                setNavigationState({ page: 'filiere-detail', majorId: 'licence-informatique' });
+                setNavigationState({ page: 'filiere-detail', majorId: 'licence-en-metier-de-linformatique' });
               } else {
                 setActivePage('informatique');
               }

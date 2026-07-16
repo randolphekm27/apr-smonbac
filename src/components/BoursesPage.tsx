@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Award, CheckCircle2, Globe, GraduationCap, HelpCircle, FileText, Sparkles } from 'lucide-react';
+import { CheckCircle2, Globe, GraduationCap, HelpCircle, FileText, Sparkles, ExternalLink } from 'lucide-react';
 
 interface BoursesPageProps {
   setActivePage: (page: any) => void;
@@ -11,100 +11,75 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
 
   const boursesNationales = [
     {
-      title: 'Bourse d\'Excellence du Gouvernement Béninois',
-      sub: 'Attribuée aux meilleurs bacheliers',
-      amount: 'Prise en charge intégrale + Allocation mensuelle de 40 000 FCFA',
-      duration: '36 mois (durée de la Licence)',
-      criteria: 'Avoir obtenu le BAC béninois avec mention Très Bien ou Excellente, faire partie des premiers classés par filière.',
+      title: 'Bourse (allocation complète)',
+      sub: 'Classement national du bac, par filière',
+      amount: 'Gratuité des études + allocation versée par l\'État',
+      criteria: 'Attribuée aux meilleurs classés par filière, dans la limite du quota fixé chaque année par le Ministère pour cette filière précise (visible sur la fiche de chaque formation).',
       steps: [
-        'Classement automatique par le MESRS après délibération du BAC',
-        'Publication des listes des allocataires au rectorat de l\'UAC, UP, UNA, et UNSTIM',
-        'Signature de la fiche d\'engagement décennal auprès de la Direction des Bourses et Aides Universitaires (DBAU)'
+        'Choix de 3 filières sur la plateforme apresmonbac.bj après le bac',
+        'Classement national automatique selon la moyenne au bac et les coefficients de la série',
+        'Publication du résultat sur la plateforme, puis inscription auprès de l\'université concernée'
       ],
-      badge: 'Excellence'
+      badge: 'Bourse'
     },
     {
-      title: 'Bourse Nationale d\'Études (Attribution Classique)',
-      sub: 'Critère social et académique combinés',
-      amount: 'Allocation de 25 000 FCFA par mois',
-      duration: '10 mois par année universitaire',
-      criteria: 'Avoir obtenu le BAC avec mention Bien ou Assez Bien, et respecter les quotas d\'âge fixés (moins de 21 ans). Enquête sociale DBAU.',
+      title: 'Aide / FPP (Formation Partiellement Payante)',
+      sub: 'Pour les candidats classés juste après les boursiers',
+      amount: 'Scolarité partiellement prise en charge par l\'État',
+      criteria: 'Attribuée aux candidats suivants dans le classement de la filière, une fois le quota de bourses épuisé.',
       steps: [
-        'Dépôt de dossier en ligne sur la plateforme DBAU du Ministère',
-        'Fournir les pièces : attestation du BAC, relevé de notes, certificat de nationalité, fiche de renseignements familiaux'
+        'Même procédure que pour la bourse : le classement détermine automatiquement qui obtient une place aide/FPP',
+        'Inscription auprès de l\'université concernée'
       ],
-      badge: 'Social'
+      badge: 'Aide / FPP'
     },
     {
-      title: 'Secours Financier Universitaire',
-      sub: 'Aide d\'accompagnement social',
-      amount: 'Aide ponctuelle de 100 000 FCFA à 150 000 FCFA par an',
-      duration: 'Versement annuel unique',
-      criteria: 'Être inscrit régulièrement dans une entité publique et justifier de difficultés sociales particulières ou de handicap.',
+      title: 'Inscription à titre payant',
+      sub: 'Au-delà des quotas bourse et FPP',
+      amount: 'Frais de scolarité à la charge de l\'étudiant, selon le tarif de l\'établissement',
+      criteria: 'Ouverte à tout candidat ne rentrant pas dans les quotas bourse/FPP de sa filière, sous réserve des places disponibles.',
       steps: [
-        'Demande adressée au Directeur du Centre National des Œuvres Universitaires (COUS)',
-        'Rapport d\'enquête du service social universitaire'
+        'Inscription directement auprès de l\'établissement choisi',
       ],
-      badge: 'Secours'
+      badge: 'Payant'
     }
   ];
 
   const boursesCooperation = [
     {
-      title: 'Bourses de Coopération Bénino-Marocaine',
-      sub: 'Études d\'ingénierie et sciences de la santé au Maroc',
-      amount: 'Exonération des frais d\'inscription + Logement universitaire + Bourse mensuelle',
-      duration: 'Durée du cycle d\'étude complet (jusqu\'à 5 ou 7 ans)',
-      criteria: 'Avoir le BAC avec mention Bien ou Très Bien. Séries C, D ou E.',
-      steps: [
-        'Dépôt de dossier physique au Ministère de l\'Enseignement Supérieur (Cotonou)',
-        'Sélection rigoureuse basée sur les notes des matières spécifiques (Maths, Physique, SVT)'
-      ],
+      title: 'Accords de coopération avec le Maroc',
+      sub: 'Filières scientifiques, médicales et d\'ingénierie',
       badge: 'Bénin-Maroc'
     },
     {
-      title: 'Bourses d\'Excellence du Gouvernement Algérien',
-      sub: 'Formation scientifique et technologique en Algérie',
-      amount: 'Prise en charge des frais académiques + Pécule mensuel',
-      duration: '3 à 5 ans selon la filière d\'ingénierie',
-      criteria: 'Obtention du BAC avec au moins 14/20 de moyenne générale. Moins de 21 ans.',
-      steps: [
-        'Formulaires à retirer auprès de la DBAU',
-        'Tests ou entretiens de sélection le cas échéant'
-      ],
+      title: 'Accords de coopération avec l\'Algérie',
+      sub: 'Filières scientifiques et technologiques',
       badge: 'Bénin-Algérie'
     },
     {
-      title: 'Bourses d\'Excellence de la République de Chine (CSC)',
-      sub: 'Études supérieures en Chine',
-      amount: 'Bourse complète (Frais de scolarité, logement, assurance médicale, 3000 RMB par mois)',
-      duration: '4 à 5 ans (incluant 1 an de cours de langue chinoise)',
-      criteria: 'BAC avec mention Bien ou supérieure. Excellent dossier académique.',
-      steps: [
-        'Candidature en ligne sur le portail d\'inscription CSC de l\'ambassade de Chine',
-        'Lettres de recommandation de vos enseignants ou du proviseur'
-      ],
+      title: 'Bourses du gouvernement chinois (CSC)',
+      sub: 'Études supérieures en Chine, toutes disciplines',
       badge: 'Bénin-Chine'
     }
   ];
 
   const docsRequis = [
-    'Une copie légalisée du certificat de nationalité béninoise',
-    'Un extrait d\'acte de naissance sécurisé (ANIP)',
-    'Deux copies légalisées de l\'attestation et du relevé de notes du BAC',
-    'Deux photos d\'identité récentes',
-    'Un certificat médical d\'aptitude délivré par un médecin officiel',
-    'Une attestation de résidence des parents ou tuteurs'
+    'Certificat de nationalité béninoise',
+    'Extrait d\'acte de naissance',
+    'Attestation et relevé de notes du BAC',
+    'Photos d\'identité récentes',
+    'Certificat médical d\'aptitude',
+    'Justificatif de domicile des parents ou tuteurs'
   ];
 
-  const easeOutExpo = [0.16, 1, 0.3, 1];
+  const easeOutExpo = [0.16, 1, 0.3, 1] as const;
 
   return (
     <div className="bg-bg-main text-text-main py-10 min-h-screen selection:bg-accent/30 selection:text-black" id="bourses-page-container">
       <div className="mx-auto max-w-7xl px-6 space-y-12">
-        
+
         {/* Hero Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: easeOutExpo }}
@@ -112,13 +87,13 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
         >
           <div className="inline-flex items-center gap-2 rounded-full bg-accent-light px-3.5 py-1.5 text-xs font-black text-accent uppercase tracking-wider">
             <Sparkles className="h-3.5 w-3.5 animate-pulse" />
-            <span>Soutien à l'Excellence Béninoise</span>
+            <span>Comment fonctionnent les allocations d'études</span>
           </div>
           <h1 className="text-3xl md:text-5xl font-black tracking-tight text-text-main leading-tight">
-            Bourses d'Études & Aides
+            Bourses & aides aux études
           </h1>
           <p className="text-sm text-text-main/50 font-medium leading-relaxed">
-            Le gouvernement béninois et ses partenaires internationaux récompensent le mérite et soutiennent l'inclusion. Découvrez les opportunités d'allocations et bourses adaptées à votre profil.
+            Au Bénin, l'attribution des bourses se fait par classement national après le bac, filière par filière — pas de dossier de demande séparé. Les montants exacts et les dates de campagne sont fixés chaque année par le Ministère : cette page explique le mécanisme, pas des chiffres figés.
           </p>
         </motion.div>
 
@@ -126,8 +101,8 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
         <div className="flex justify-center">
           <div className="flex whitespace-nowrap bg-bg-main/50 p-1.5 rounded-2xl border border-black/5">
             {[
-              { id: 'national', label: 'Bourses Nationales (Bénin)' },
-              { id: 'cooperation', label: 'Bourses de Coopération' }
+              { id: 'national', label: 'Allocations nationales (Bénin)' },
+              { id: 'cooperation', label: 'Bourses de coopération' }
             ].map((tab) => {
               const isActive = activeTab === tab.id;
               return (
@@ -141,7 +116,7 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
                   {isActive && (
                     <motion.div
                       layoutId="boursesActiveTabBg"
-                      className="absolute inset-0 bg-accent rounded-xl -z-10 shadow-sm shadow-accent/$1"
+                      className="absolute inset-0 bg-accent rounded-xl -z-10 shadow-sm"
                       transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                     />
                   )}
@@ -168,13 +143,13 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
                   <>
                     <h2 className="text-lg font-black text-black flex items-center gap-2 uppercase tracking-wide">
                       <GraduationCap className="h-5 w-5 text-accent" />
-                      Allocations d'État au Bénin (DBAU)
+                      Les 3 régimes possibles, par filière
                     </h2>
 
                     {boursesNationales.map((bourse, idx) => (
-                      <motion.div 
+                      <motion.div
                         whileTap={{ scale: 0.99 }}
-                        key={idx} 
+                        key={idx}
                         className="group card-premium p-8 transition-all duration-300"
                       >
                         <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
@@ -185,25 +160,19 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
                         </div>
                         <p className="text-xs text-text-main/40 font-bold mb-4">{bourse.sub}</p>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 bg-bg-main p-5 rounded-2xl text-xs font-medium border border-black/5">
-                          <div>
-                            <span className="text-[9px] font-extrabold text-text-main/40 block uppercase tracking-wider">Montant / Avantages</span>
-                            <span className="font-extrabold text-accent text-sm mt-0.5 block">{bourse.amount}</span>
-                          </div>
-                          <div>
-                            <span className="text-[9px] font-extrabold text-text-main/40 block uppercase tracking-wider">Durée de versement</span>
-                            <span className="font-extrabold text-black text-sm mt-0.5 block">{bourse.duration}</span>
-                          </div>
+                        <div className="mb-4 bg-bg-main p-5 rounded-2xl text-xs font-medium border border-black/5">
+                          <span className="text-[9px] font-extrabold text-text-main/40 block uppercase tracking-wider">Ce que ça change</span>
+                          <span className="font-extrabold text-accent text-sm mt-0.5 block">{bourse.amount}</span>
                         </div>
 
                         <div className="space-y-4">
                           <div>
-                            <span className="text-[9px] font-extrabold text-text-main/40 uppercase block tracking-wider">Critères d'attribution :</span>
+                            <span className="text-[9px] font-extrabold text-text-main/40 uppercase block tracking-wider">Qui l'obtient :</span>
                             <p className="text-xs text-text-main/60 leading-relaxed font-medium mt-1">{bourse.criteria}</p>
                           </div>
 
                           <div className="pt-2">
-                            <span className="text-[9px] font-extrabold text-text-main/40 uppercase block mb-2 tracking-wider">Processus de candidature :</span>
+                            <span className="text-[9px] font-extrabold text-text-main/40 uppercase block mb-2 tracking-wider">Comment ça se passe :</span>
                             <ul className="space-y-1.5 text-xs text-text-main/60 font-medium">
                               {bourse.steps.map((step, sIdx) => (
                                 <li key={sIdx} className="flex gap-2">
@@ -216,18 +185,25 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
                         </div>
                       </motion.div>
                     ))}
+
+                    <p className="text-[11px] text-text-main/40 font-medium px-2">
+                      Le nombre exact de places bourse et aide/FPP est fixé chaque année, filière par filière : retrouve les quotas actuels sur la fiche de chaque formation dans la rubrique Orientation.
+                    </p>
                   </>
                 ) : (
                   <>
                     <h2 className="text-lg font-black text-black flex items-center gap-2 uppercase tracking-wide">
                       <Globe className="h-5 w-5 text-accent" />
-                      Bourses de Coopération d'État (Étranger)
+                      Bourses d'études à l'étranger
                     </h2>
+                    <p className="text-xs text-text-main/50 font-medium leading-relaxed">
+                      Le Bénin a des accords de coopération avec plusieurs pays pour l'envoi d'étudiants méritants à l'étranger. Les places, montants et conditions varient chaque année : ce qui suit liste les partenariats connus, pas une offre figée.
+                    </p>
 
                     {boursesCooperation.map((bourse, idx) => (
-                      <motion.div 
+                      <motion.div
                         whileTap={{ scale: 0.99 }}
-                        key={idx} 
+                        key={idx}
                         className="group card-premium p-8 transition-all duration-300"
                       >
                         <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
@@ -236,39 +212,16 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
                             {bourse.badge}
                           </span>
                         </div>
-                        <p className="text-xs text-text-main/40 font-bold mb-4">{bourse.sub}</p>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 bg-bg-main p-5 rounded-2xl text-xs font-medium border border-black/5">
-                          <div>
-                            <span className="text-[9px] font-extrabold text-text-main/40 block uppercase tracking-wider">Prise en charge</span>
-                            <span className="font-extrabold text-accent text-sm mt-0.5 block">{bourse.amount}</span>
-                          </div>
-                          <div>
-                            <span className="text-[9px] font-extrabold text-text-main/40 block uppercase tracking-wider">Durée</span>
-                            <span className="font-extrabold text-black text-sm mt-0.5 block">{bourse.duration}</span>
-                          </div>
-                        </div>
-
-                        <div className="space-y-4">
-                          <div>
-                            <span className="text-[9px] font-extrabold text-text-main/40 uppercase block tracking-wider">Conditions requises :</span>
-                            <p className="text-xs text-text-main/60 leading-relaxed font-medium mt-1">{bourse.criteria}</p>
-                          </div>
-
-                          <div className="pt-2">
-                            <span className="text-[9px] font-extrabold text-text-main/40 uppercase block mb-2 tracking-wider">Comment postuler :</span>
-                            <ul className="space-y-1.5 text-xs text-text-main/60 font-medium">
-                              {bourse.steps.map((step, sIdx) => (
-                                <li key={sIdx} className="flex gap-2">
-                                  <span className="text-accent font-black shrink-0">{sIdx + 1}.</span>
-                                  <span>{step}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
+                        <p className="text-xs text-text-main/60 font-medium">{bourse.sub}</p>
                       </motion.div>
                     ))}
+
+                    <div className="flex items-start gap-3 bg-white border border-black/5 rounded-2xl p-5">
+                      <ExternalLink className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                      <p className="text-xs text-text-main/60 leading-relaxed font-medium">
+                        Pour les montants, quotas et modalités de candidature à jour, contacte la Direction des Bourses et Aides Universitaires (DBAU) du MESRS ou l'ambassade du pays concerné.
+                      </p>
+                    </div>
                   </>
                 )}
               </motion.div>
@@ -277,7 +230,7 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
 
           {/* Right Column: Guide & Requirements */}
           <div className="lg:col-span-4 space-y-8">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 15 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
@@ -285,10 +238,10 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
             >
               <h3 className="text-xs font-black text-black uppercase tracking-wider mb-4 flex items-center gap-2">
                 <FileText className="h-4.5 w-4.5 text-accent" />
-                Dossier Type DBAU
+                Pièces généralement demandées
               </h3>
               <p className="text-xs text-text-main/50 leading-relaxed mb-4 font-medium">
-                Originaux et copies certifiées requis pour postuler à une allocation nationale au Bénin :
+                À confirmer auprès de l'université au moment de l'inscription, mais on te demandera à peu près toujours :
               </p>
               <ul className="space-y-3 text-xs text-text-main/70 font-medium">
                 {docsRequis.map((doc, idx) => (
@@ -300,7 +253,7 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
               </ul>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 15 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -309,19 +262,19 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
               <div className="absolute top-0 right-0 h-40 w-40 rounded-full bg-accent/5 blur-2xl" />
               <h3 className="text-xs font-black uppercase tracking-wider mb-4 flex items-center gap-2 text-accent">
                 <HelpCircle className="h-4.5 w-4.5" />
-                Le Saviez-vous ?
+                À retenir
               </h3>
               <div className="space-y-5 text-xs font-medium leading-relaxed">
                 <div>
-                  <h4 className="font-extrabold text-white mb-1.5">Cumul des allocations d'État</h4>
+                  <h4 className="font-extrabold text-white mb-1.5">Un changement de filière fait perdre l'allocation</h4>
                   <p className="text-white/50">
-                    Il est strictly interdit par la réglementation DBAU de cumuler une bourse nationale d'études et une autre aide publique d'État pour une même année académique.
+                    D'après le guide officiel du MESRS, tout changement de filière après le classement entraîne la perte de la bourse ou de l'aide/FPP obtenue.
                   </p>
                 </div>
                 <div className="pt-3 border-t border-white/5">
-                  <h4 className="font-extrabold text-white mb-1.5">Date limite de dépôt</h4>
+                  <h4 className="font-extrabold text-white mb-1.5">Où suivre le calendrier réel</h4>
                   <p className="text-white/50">
-                    Les dépôts de candidatures ouvrent généralement fin Septembre et se clôturent courant Novembre de chaque année universitaire.
+                    Les dates d'ouverture de la plateforme apresmonbac.bj changent chaque année : c'est la seule source à considérer comme définitive.
                   </p>
                 </div>
               </div>

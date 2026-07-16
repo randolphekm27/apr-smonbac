@@ -18,7 +18,7 @@ import BoursesPage from './components/BoursesPage';
 import StagesPage from './components/StagesPage';
 import ActualitesPage from './components/ActualitesPage';
 
-import { UNIVERSITIES, SCHOOLS, MAJORS } from './data';
+import { supabase } from './lib/supabase';
 
 type AppActivePage = 'accueil' | 'universites' | 'university-detail' | 'school-detail' | 'filiere-detail' | 'concours' | 'bourses' | 'stages' | 'actualites';
 
@@ -29,6 +29,13 @@ interface NavigationState {
   majorId?: string;
 }
 
+interface SearchResultItem {
+  title: string;
+  type: 'Université' | 'Établissement' | 'Filière';
+  desc: string;
+  action: NavigationState;
+}
+
 export default function App() {
   const [activePage, setActivePage] = useState<AppActivePage>('accueil');
   const [selectedUniversityId, setSelectedUniversityId] = useState<string | undefined>(undefined);
@@ -37,29 +44,27 @@ export default function App() {
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
+  const [quickSuggestions, setQuickSuggestions] = useState<SearchResultItem[]>([]);
 
-  // Pre-configured dynamic search index from our relational data
-  const dynamicSuggestions = [
-    ...UNIVERSITIES.map(u => ({
-      title: u.fullName + ' (' + u.name + ')',
-      type: 'Université',
-      desc: u.description,
-      action: { page: 'university-detail' as const, universityId: u.id }
-    })),
-    ...SCHOOLS.map(s => ({
-      title: s.fullName + ' (' + s.name + ')',
-      type: 'Établissement',
-      desc: s.description,
-      action: { page: 'school-detail' as const, universityId: s.universityId, schoolId: s.id }
-    })),
-    ...MAJORS.map(m => ({
-      title: m.name,
-      type: 'Filière',
-      desc: m.description,
-      action: { page: 'filiere-detail' as const, majorId: m.id }
-    }))
-  ];
+  // Quelques universités réelles à proposer quand la recherche est vide
+  useEffect(() => {
+    async function fetchQuickSuggestions() {
+      try {
+        const { data, error } = await supabase.from('universites').select('slug, nom, description').order('nom').limit(5);
+        if (error) throw error;
+        setQuickSuggestions((data || []).map(u => ({
+          title: u.nom,
+          type: 'Université',
+          desc: u.description || '',
+          action: { page: 'university-detail', universityId: u.slug }
+        })));
+      } catch (err) {
+        console.error('Error fetching quick suggestions:', err);
+      }
+    }
+    fetchQuickSuggestions();
+  }, []);
 
   // Sync scroll to top on page changes
   useEffect(() => {
@@ -155,19 +160,65 @@ export default function App() {
     setNavigationState({ page });
   };
 
-  // Handle searching inside the modal
+  // Handle searching inside the modal : requête live sur les vraies données Supabase
   useEffect(() => {
-    if (!searchQuery.trim()) {
+    const term = searchQuery.trim();
+    if (!term) {
       setSearchResults([]);
       return;
     }
-    const query = searchQuery.toLowerCase();
-    const filtered = dynamicSuggestions.filter(item => 
-      item.title.toLowerCase().includes(query) || 
-      item.type.toLowerCase().includes(query) ||
-      item.desc.toLowerCase().includes(query)
-    );
-    setSearchResults(filtered);
+
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      try {
+        const pattern = `%${term}%`;
+        const [uniRes, ecoleRes, filiereRes] = await Promise.all([
+          supabase.from('universites').select('slug, nom, description').ilike('nom', pattern).limit(4),
+          supabase.from('ecoles').select('slug, nom, description, universite:universites(slug)').ilike('nom', pattern).limit(4),
+          supabase.from('filieres').select('slug, nom, description').ilike('nom', pattern).limit(6),
+        ]);
+
+        if (cancelled) return;
+
+        const results: SearchResultItem[] = [];
+
+        (uniRes.data || []).forEach((u: any) => results.push({
+          title: u.nom,
+          type: 'Université',
+          desc: u.description || '',
+          action: { page: 'university-detail', universityId: u.slug }
+        }));
+
+        (ecoleRes.data || []).forEach((e: any) => {
+          const universite = Array.isArray(e.universite) ? e.universite[0] : e.universite;
+          results.push({
+            title: e.nom,
+            type: 'Établissement',
+            desc: e.description || '',
+            action: { page: 'school-detail', universityId: universite?.slug, schoolId: e.slug }
+          });
+        });
+
+        (filiereRes.data || []).forEach((f: any) => {
+          results.push({
+            title: f.nom,
+            type: 'Filière',
+            desc: f.description || '',
+            action: { page: 'filiere-detail', majorId: f.slug }
+          });
+        });
+
+        setSearchResults(results);
+      } catch (err) {
+        console.error('Error searching:', err);
+        if (!cancelled) setSearchResults([]);
+      }
+    }, 300);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, [searchQuery]);
 
   const handleSelectResult = (action: NavigationState) => {
@@ -413,7 +464,7 @@ export default function App() {
                       </span>
                     </div>
                     <div className="space-y-1">
-                      {dynamicSuggestions.slice(0, 5).map((item, idx) => (
+                      {quickSuggestions.map((item, idx) => (
                         <button
                           key={idx}
                           onClick={() => handleSelectResult(item.action)}
