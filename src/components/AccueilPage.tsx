@@ -184,7 +184,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
                 transition={{ duration: 0.8, delay: 0.4, ease: easeOutExpo }}
                 className="text-[14.5px] text-text-main/60 leading-relaxed max-w-xl font-medium"
               >
-                Explorez plus de 300 filières d'avenir, découvrez les 4 grandes universités publiques, préparez vos concours d'excellence, postulez à des bourses exclusives et saisissez des opportunités de stages au Bénin.
+                Explorez plus de 200 filières d'avenir, découvrez les 4 grandes universités publiques, préparez vos concours d'excellence, postulez à des bourses exclusives et saisissez des opportunités de stages au Bénin.
               </motion.p>
             </div>
 
@@ -204,18 +204,18 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Trouvez la formation qui vous ressemble..."
-                  className="w-full bg-transparent px-3 py-3 text-sm font-bold text-text-main placeholder-black/30 outline-none"
+                  placeholder="Trouvez votre formation..."
+                  className="w-full min-w-0 bg-transparent px-3 py-3 text-sm font-bold text-text-main placeholder-black/30 outline-none"
                   id="hero-search-input"
                 />
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                   type="submit"
-                  className="flex h-12 px-6 shrink-0 items-center justify-center gap-2 rounded-full bg-accent text-black font-extrabold text-xs shadow-md shadow-accent/$1 hover:bg-accent-hover hover:shadow-lg transition-all cursor-pointer"
+                  className="flex h-12 w-12 sm:w-auto px-0 sm:px-6 shrink-0 items-center justify-center gap-2 rounded-full bg-accent text-black font-extrabold text-xs shadow-md shadow-accent/$1 hover:bg-accent-hover hover:shadow-lg transition-all cursor-pointer"
                   id="hero-search-btn"
                 >
-                  <span>Rechercher</span>
+                  <span className="hidden sm:inline">Rechercher</span>
                   <ArrowRight className="h-3.5 w-3.5 stroke-$1" />
                 </motion.button>
               </div>

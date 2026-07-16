@@ -326,10 +326,10 @@ export default function App() {
       </main>
 
       {/* Floating Premium Mobile Navigation Bar */}
-      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-md bg-white/90 backdrop-blur-xl border border-text-main/$1 px-3 py-2 rounded-2xl shadow-xl shadow-black/5 flex items-center justify-around gap-1 md:hidden">
+      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-md bg-white/90 backdrop-blur-xl border border-text-main/$1 px-1.5 py-2 rounded-2xl shadow-xl shadow-black/5 flex items-center justify-between md:hidden">
         {[
           { icon: Home, page: 'accueil' as const, label: 'Accueil' },
-          { icon: GraduationCap, page: 'universites' as const, label: 'Orientation' },
+          { icon: GraduationCap, page: 'universites' as const, label: 'Écoles' },
           { icon: Award, page: 'concours' as const, label: 'Concours' },
           { icon: BookOpen, page: 'bourses' as const, label: 'Bourses' },
           { icon: Briefcase, page: 'stages' as const, label: 'Stages' },
@@ -337,14 +337,14 @@ export default function App() {
         ].map((item) => {
           const IconComponent = item.icon;
           // Determine if this mobile navigation item is considered selected
-          const isSelected = activePage === item.page || 
+          const isSelected = activePage === item.page ||
             (item.page === 'universites' && ['university-detail', 'school-detail', 'filiere-detail'].includes(activePage));
-          
+
           return (
             <button
               key={item.page}
               onClick={() => handleSimplePageChange(item.page)}
-              className="relative flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-300 group cursor-pointer"
+              className="relative flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all duration-300 group cursor-pointer"
               id={`mobile-nav-${item.page}`}
             >
               {/* Highlight background pill */}
@@ -356,12 +356,12 @@ export default function App() {
                 />
               )}
 
-              <IconComponent 
-                className={`h-5 w-5 transition-transform duration-200 group-active:scale-95 ${
+              <IconComponent
+                className={`h-4.5 w-4.5 transition-transform duration-200 group-active:scale-95 ${
                   isSelected ? 'text-accent stroke-$1' : 'text-text-main/50 group-hover:text-black'
-                }`} 
+                }`}
               />
-              <span className={`text-[9px] mt-1 font-bold tracking-tight transition-colors ${
+              <span className={`text-[8px] mt-1 font-bold tracking-tight whitespace-nowrap transition-colors ${
                 isSelected ? 'text-black' : 'text-text-main/40 group-hover:text-black'
               }`}>
                 {item.label}
