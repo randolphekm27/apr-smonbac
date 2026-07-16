@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { 
-  Search, Play, Sparkles, BookOpen, GraduationCap, Trophy, Award, 
+  Search, Sparkles, BookOpen, GraduationCap, Trophy, Award,
   Briefcase, CheckCircle, ArrowRight, Bell, Star, ArrowUpRight, 
   ChevronRight, Smile, Users, Heart
 } from 'lucide-react';
-import { TESTIMONIALS } from '../data';
 import { supabase } from '../lib/supabase';
 import { University } from '../types';
+import ImageWithFallback from './ImageWithFallback';
 
 type AppActivePage = 'accueil' | 'universites' | 'university-detail' | 'school-detail' | 'filiere-detail' | 'concours' | 'bourses' | 'stages' | 'actualites';
 
@@ -76,8 +76,6 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
   const [searchQuery, setSearchQuery] = useState('');
   const [subscribedEmail, setSubscribedEmail] = useState('');
   const [subscriptionSuccess, setSubscriptionSuccess] = useState(false);
-  const [activeTestimonialIndex, setActiveTestimonialIndex] = useState(0);
-  const [showVideoModal, setShowVideoModal] = useState(false);
   const [universities, setUniversities] = useState<University[]>([]);
 
   useEffect(() => {
@@ -105,15 +103,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
 
   const handlePopularSearch = (term: string) => {
     setSearchQuery(term);
-    if (term === 'Informatique') {
-      if (setNavigationState) {
-        setNavigationState({ page: 'filiere-detail', majorId: 'licence-informatique' });
-      } else {
-        setActivePage('filiere-detail');
-      }
-    } else {
-      onSearch(term);
-    }
+    onSearch(term);
   };
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -127,7 +117,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
     }
   };
 
-  const easeOutExpo = [0.16, 1, 0.3, 1];
+  const easeOutExpo = [0.16, 1, 0.3, 1] as const;
 
   const viewportVariant = {
     hidden: { opacity: 0, y: 35, filter: 'blur(6px)' },
@@ -284,28 +274,12 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
               className="relative w-full max-w-[370px] aspect-$1/$2 rounded-[2.5rem] p-3.5 border border-white bg-white/40 shadow-2xl backdrop-blur-sm overflow-hidden group"
             >
               <div className="w-full h-full rounded-4xl overflow-hidden relative">
-                <img
+                <ImageWithFallback
                   src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80"
-                  alt="Étudiant"
+                  alt="Étudiant béninois"
                   className="w-full h-full object-cover transition-transform duration-1200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
-                
-                <motion.button
-                  whileHover={{ scale: 1.12 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowVideoModal(true)}
-                  className="absolute inset-0 m-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-black shadow-2xl hover:scale-110 active:scale-95 cursor-pointer transition-transform duration-300 z-10"
-                  id="play-video-hero"
-                >
-                  <Play className="h-5 w-5 fill-black stroke-black ml-0.5" />
-                  <span className="absolute inset-0 rounded-full border-2 border-white animate-ping opacity-70" />
-                </motion.button>
-
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md px-5 py-2 rounded-full text-[10px] font-black tracking-widest text-black uppercase shadow-lg select-none">
-                  Découvrir en vidéo
-                </div>
               </div>
             </motion.div>
           </div>
@@ -328,7 +302,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
                 <BookOpen className="h-6 w-6 stroke-$1" />
               </motion.div>
               <span className="text-3xl md:text-4xl font-black text-text-main">
-                <Counter value={300} suffix="+" />
+                <Counter value={213} />
               </span>
               <span className="text-xs text-text-main/50 font-bold tracking-tight mt-1.5 uppercase">Filières d'Orientation</span>
             </div>
@@ -354,7 +328,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
                 <Users className="h-6 w-6 stroke-$1" />
               </motion.div>
               <span className="text-3xl md:text-4xl font-black text-text-main">
-                <Counter value={45} suffix="+" />
+                <Counter value={64} />
               </span>
               <span className="text-xs text-text-main/50 font-bold tracking-tight mt-1.5 uppercase">Écoles & Instituts</span>
             </div>
@@ -367,9 +341,9 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
                 <Star className="h-6 w-6 stroke-$1" />
               </motion.div>
               <span className="text-3xl md:text-4xl font-black text-text-main">
-                <Counter value={1000} suffix="+" />
+                <Counter value={6670} />
               </span>
-              <span className="text-xs text-text-main/50 font-bold tracking-tight mt-1.5 uppercase">Opportunités Annuelles</span>
+              <span className="text-xs text-text-main/50 font-bold tracking-tight mt-1.5 uppercase">Places boursières (guide 2025-2026)</span>
             </div>
           </div>
         </motion.div>
@@ -402,7 +376,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
         >
           {[
-            { page: 'filiere-detail' as const, majorId: 'licence-informatique', icon: BookOpen, title: 'Filières', desc: 'Explorer les formations', id: 'search-card-filieres' },
+            { page: 'universites' as const, icon: BookOpen, title: 'Filières', desc: 'Explorer les formations', id: 'search-card-filieres' },
             { page: 'universites' as const, icon: GraduationCap, title: 'Universités', desc: 'Découvrir les campus', id: 'search-card-universites' },
             { page: 'concours' as const, icon: Trophy, title: 'Concours', desc: 'Préparez votre d\'élite', id: 'search-card-concours' },
             { page: 'bourses' as const, icon: Award, title: 'Bourses d\'études', desc: 'Financer vos ambitions', id: 'search-card-bourses' },
@@ -610,11 +584,10 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
               id={`univ-card-home-${univ.id}`}
             >
               <div className="h-44 overflow-hidden relative">
-                <img
-                  src={univ.banner_url || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=800&q=80'}
+                <ImageWithFallback
+                  src={univ.banner_url || univ.logo_url}
                   alt={univ.nom}
                   className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute top-4 left-4 rounded-xl bg-white/95 backdrop-blur-md px-3 py-1.5 text-[10px] font-black text-black shadow-sm uppercase">
                   {univ.nom.split(' ')[0]}
@@ -658,8 +631,8 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
         </div>
       </motion.section>
 
-      {/* 5. TESTIMONIALS SECTION */}
-      <motion.section 
+      {/* 5. POURQUOI CETTE PLATEFORME */}
+      <motion.section
         variants={viewportVariant}
         initial="hidden"
         whileInView="visible"
@@ -667,60 +640,27 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
         className="mx-auto max-w-7xl px-6 py-16"
       >
         <div className="text-center space-y-3 mb-12">
-          <h2 className="text-3xl font-black tracking-tight text-text-main">Ils ont trouvé leur voie</h2>
-          <p className="text-sm text-text-main/50 font-medium">Découvrez les retours d'expérience et témoignages de nos lauréats post-bac.</p>
+          <h2 className="text-3xl font-black tracking-tight text-text-main">Des informations sourcées, pas des promesses</h2>
+          <p className="text-sm text-text-main/50 font-medium max-w-2xl mx-auto">Tout ce que tu lis ici vient du Guide d'information universitaire 2025-2026 du Ministère de l'Enseignement Supérieur.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {TESTIMONIALS.map((t, idx) => {
-            const isActive = activeTestimonialIndex === idx;
-            return (
-              <motion.div
-                key={idx}
-                whileHover={{ y: -4, borderColor: 'rgba(244,196,48,0.3)', boxShadow: '0 15px 30px -5px rgba(0,0,0,0.03)' }}
-                onClick={() => setActiveTestimonialIndex(idx)}
-                className={`p-8 bg-white/75 rounded-[2.5rem] border transition-all duration-300 cursor-pointer relative flex flex-col justify-between h-full ${
-                  isActive ? 'border-accent bg-white shadow-md' : 'border-black/5 shadow-sm'
-                }`}
-                id={`testimonial-card-${idx}`}
-              >
-                <div className="absolute top-6 right-8 text-accent/20 font-serif text-5xl select-none leading-none">
-                  “
-                </div>
-
-                <div className="space-y-4">
-                  <p className="text-xs text-text-main/70 leading-relaxed italic font-medium">
-                    "{t.quote}"
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-4 mt-6 pt-5 border-t border-black/5">
-                  <img
-                    src={t.avatar}
-                    alt={t.name}
-                    className="h-10 w-10 rounded-full object-cover border-2 border-accent/30"
-                  />
-                  <div>
-                    <h4 className="text-xs font-black text-text-main">{t.name}</h4>
-                    <span className="text-[10px] text-text-main/50 font-bold block mt-0.5">{t.role}</span>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        <div className="flex justify-center gap-2.5 mt-8">
-          {TESTIMONIALS.map((_, idx) => (
-            <button
+          {[
+            { icon: BookOpen, title: '213 filières détaillées', text: "Conditions d'admission, débouchés, quotas de bourses : extraits du guide officiel, pas de texte générique." },
+            { icon: GraduationCap, title: '64 écoles et instituts', text: "Rattachés à leur université, avec leurs propres filières et conditions d'entrée." },
+            { icon: Star, title: 'Mis à jour pour 2025-2026', text: "Les quotas de bourses et places FPP affichés correspondent à l'édition la plus récente du guide MESRS." },
+          ].map((item, idx) => (
+            <motion.div
               key={idx}
-              onClick={() => setActiveTestimonialIndex(idx)}
-              className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                activeTestimonialIndex === idx ? 'w-8 bg-accent' : 'w-2.5 bg-black/10'
-              }`}
-              title={`Témoignage ${idx + 1}`}
-              id={`testimonial-dot-${idx}`}
-            />
+              whileHover={{ y: -4, boxShadow: '0 15px 30px -5px rgba(0,0,0,0.03)' }}
+              className="p-8 bg-white/75 rounded-[2.5rem] border border-black/5 shadow-sm transition-all duration-300 flex flex-col gap-4"
+            >
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent/15 text-accent">
+                <item.icon className="h-5 w-5" />
+              </div>
+              <h4 className="text-sm font-black text-text-main">{item.title}</h4>
+              <p className="text-xs text-text-main/60 leading-relaxed font-medium">{item.text}</p>
+            </motion.div>
           ))}
         </div>
       </motion.section>
@@ -799,77 +739,6 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
         </div>
       </motion.section>
 
-      {/* Video Teaser Modal */}
-      <AnimatePresence>
-        {showVideoModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
-            onClick={() => setShowVideoModal(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.95, y: 15 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 15 }}
-              transition={{ type: 'spring', damping: 25 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-3xl overflow-hidden rounded-[2.5rem] bg-text-main border border-white/10 p-6 md:p-8 shadow-2xl text-white space-y-4"
-            >
-              <div className="flex items-center justify-between border-b border-white/5 pb-4">
-                <div className="flex items-center gap-2">
-                  <div className="h-6 w-6 rounded-full bg-accent flex items-center justify-center text-black font-extrabold text-[10px]">
-                    ★
-                  </div>
-                  <span className="text-sm font-extrabold tracking-tight">Découvrez "Après Mon Bac"</span>
-                </div>
-                <button
-                  onClick={() => setShowVideoModal(false)}
-                  className="rounded-full bg-white/10 hover:bg-white/20 p-1.5 text-xs cursor-pointer"
-                  id="close-video-modal"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div className="aspect-video w-full rounded-3xl bg-zinc-900 border border-white/5 relative flex flex-col items-center justify-center overflow-hidden group">
-                <img
-                  src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80"
-                  alt="Student Video Cover"
-                  className="absolute inset-0 h-full w-full object-cover brightness-[0.4]"
-                  referrerPolicy="no-referrer"
-                />
-                
-                <div className="absolute inset-0 m-auto flex flex-col items-center justify-center z-10 text-center px-6">
-                  <Play className="h-16 w-16 text-accent fill-accent/$1 mb-4 animate-pulse cursor-pointer" />
-                  <h3 className="text-lg font-bold">Présentation Officielle Après Mon Bac Bénin</h3>
-                  <p className="text-xs text-white/60 max-w-md mt-1">
-                    Découvrez comment la plateforme simplifie l'orientation pour les nouveaux bacheliers.
-                  </p>
-                </div>
-
-                <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md rounded-xl p-3 flex items-center justify-between text-[10px] font-bold z-10">
-                  <div className="flex items-center gap-3">
-                    <span className="text-accent">0:00 / 2:34</span>
-                    <span className="text-white/40">● LIVE</span>
-                  </div>
-                  <div className="h-1 w-32 bg-white/20 rounded-full overflow-hidden">
-                    <div className="h-full bg-accent w-1/4" />
-                  </div>
-                  <div>
-                    <span>1080p HD</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-xs text-white/50 text-center">
-                Ce teaser présente les ressources interactives et le simulateur de moyenne de la plateforme.
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

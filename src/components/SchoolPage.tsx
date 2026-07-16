@@ -69,7 +69,7 @@ export default function SchoolPage({ schoolId, setNavigationState }: SchoolPageP
   };
 
   const colors = getPastelColorClass(school.theme_color || 'blue');
-  const easeOutExpo = [0.16, 1, 0.3, 1];
+  const easeOutExpo = [0.16, 1, 0.3, 1] as const;
 
   return (
     <div className="bg-bg-main text-text-main py-10 min-h-screen selection:bg-accent/30 selection:text-black" id={`school-detail-page-${school.id}`}>
@@ -138,16 +138,17 @@ export default function SchoolPage({ schoolId, setNavigationState }: SchoolPageP
                 </p>
               </div>
 
-                <div className="pt-6 border-t border-black/5 space-y-3">
-                  <h3 className="text-xs font-black text-black uppercase tracking-wider flex items-center gap-2">
-                    <History className="h-4 w-4 text-accent" />
-                    Historique de l'Établissement
-                  </h3>
-                  <p className="text-xs text-text-main/50 leading-relaxed font-medium">
-                    {school.histoire}
-                  </p>
-                </div>
-
+                {school.histoire && (
+                  <div className="pt-6 border-t border-black/5 space-y-3">
+                    <h3 className="text-xs font-black text-black uppercase tracking-wider flex items-center gap-2">
+                      <History className="h-4 w-4 text-accent" />
+                      Historique de l'établissement
+                    </h3>
+                    <p className="text-xs text-text-main/50 leading-relaxed font-medium">
+                      {school.histoire}
+                    </p>
+                  </div>
+                )}
 
             </motion.div>
 
@@ -208,47 +209,53 @@ export default function SchoolPage({ schoolId, setNavigationState }: SchoolPageP
             
 
 
-            {/* Contacts card */}
-            <div className="bg-white border border-black/5 rounded-4xl p-6 space-y-4 shadow-sm">
-              <h3 className="text-xs font-black text-black uppercase tracking-wider flex items-center gap-2">
-                <Phone className="h-4 w-4 text-accent" />
-                Secrétariat & Contacts
-              </h3>
-              <div className="space-y-3.5 text-xs text-text-main/60 font-medium">
-                <div className="flex items-start gap-3">
-                  <MapPin className="h-4 w-4 text-accent shrink-0 mt-0.5" />
-                  <p>{school.contact_adresse || 'Information à venir'}</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Phone className="h-4 w-4 text-accent shrink-0" />
-                  <p>{school.contact_telephone || 'Information à venir'}</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Mail className="h-4 w-4 text-accent shrink-0" />
-                  <p className="truncate">{school.contact_email || 'Information à venir'}</p>
+            {/* Contacts card : n'affiche que ce qu'on sait vraiment */}
+            {(school.contact_adresse || school.contact_telephone || school.contact_email) && (
+              <div className="bg-white border border-black/5 rounded-4xl p-6 space-y-4 shadow-sm">
+                <h3 className="text-xs font-black text-black uppercase tracking-wider flex items-center gap-2">
+                  <Phone className="h-4 w-4 text-accent" />
+                  Secrétariat & contacts
+                </h3>
+                <div className="space-y-3.5 text-xs text-text-main/60 font-medium">
+                  {school.contact_adresse && (
+                    <div className="flex items-start gap-3">
+                      <MapPin className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                      <p>{school.contact_adresse}</p>
+                    </div>
+                  )}
+                  {school.contact_telephone && (
+                    <div className="flex items-center gap-3">
+                      <Phone className="h-4 w-4 text-accent shrink-0" />
+                      <p>{school.contact_telephone}</p>
+                    </div>
+                  )}
+                  {school.contact_email && (
+                    <div className="flex items-center gap-3">
+                      <Mail className="h-4 w-4 text-accent shrink-0" />
+                      <p className="truncate">{school.contact_email}</p>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* Location / Physical Map info */}
+            {/* Rattachement / repère géographique, basé sur l'université de tutelle */}
             <div className="bg-white border border-black/5 rounded-4xl overflow-hidden shadow-sm">
               <div className="p-6 border-b border-black/5">
                 <h3 className="text-xs font-black text-black uppercase tracking-wider flex items-center gap-2">
                   <MapPin className="h-4 w-4 text-accent" />
-                  Localisation de l'école
+                  Rattachement
                 </h3>
                 <p className="text-[11px] text-text-main/50 mt-1 font-medium">
-                  {school.contact_adresse || 'Information à venir'}
+                  Établissement de {university?.nom || 'l\'université'}
                 </p>
               </div>
-              {/* Simulated clean modern layout map */}
-              <div className="h-40 bg-neutral-100 flex flex-col items-center justify-center p-4 text-center space-y-2 relative">
+              <div className="h-32 bg-neutral-100 flex flex-col items-center justify-center p-4 text-center space-y-2 relative">
                 <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#19181A_1px,transparent_1px)] [background-size:16px_16px]" />
                 <div className="h-10 w-10 rounded-full bg-accent/10 text-accent flex items-center justify-center text-sm relative z-10">
                   📍
                 </div>
-                <span className="text-[11px] font-extrabold text-black relative z-10">{school.nom} - Ouest Afrique</span>
-                <span className="text-[9px] text-text-main/40 font-bold uppercase tracking-wider relative z-10">République du Bénin</span>
+                <span className="text-[11px] font-extrabold text-black relative z-10">République du Bénin</span>
               </div>
             </div>
 

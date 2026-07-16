@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Briefcase, FileText, CheckCircle, Search, Mail, ExternalLink, Sparkles, BookOpen, UserCheck, MessageSquare, Check, Trash } from 'lucide-react';
+import { Briefcase, FileText, Sparkles, Check, Trash, MapPin } from 'lucide-react';
 
 interface StagesPageProps {
   setActivePage: (page: any) => void;
@@ -8,58 +8,33 @@ interface StagesPageProps {
 
 export default function StagesPage({ setActivePage }: StagesPageProps) {
   const [selectedTopic, setSelectedTopic] = useState<'listings' | 'guide'>('listings');
-  const [appliedCompany, setAppliedCompany] = useState<string | null>(null);
 
   // CV Builder states
   const [cvName, setCvName] = useState('');
   const [cvMajor, setCvMajor] = useState('');
   const [cvGenerated, setCvGenerated] = useState(false);
 
-  const internships = [
+  const pistes = [
     {
-      company: 'Sèmè City (La Cité de l\'Innovation)',
-      logoColor: 'bg-emerald-500',
-      title: 'Stage d\'Immersion Jeune Talent (Tech & Design)',
-      duration: '3 mois',
-      location: 'Cotonou (Sèmè One), Bénin',
-      tag: 'Innovation / Design',
-      desc: 'Découvrez le monde des startups et participez à des projets d\'intelligence artificielle, de prototypage et d\'impression 3D au cœur de Sèmè City.',
-      perks: 'Pécule mensuel de transport + accès libre aux fablabs',
-      requirements: 'Jeunes bacheliers ou étudiants de 1ère année, passionnés de technologie.'
+      title: 'Sèmè City',
+      tag: 'Innovation / Numérique',
+      desc: "Le pôle d'innovation de l'État à Cotonou héberge des startups et programmes tech qui accueillent régulièrement des jeunes talents. Renseigne-toi directement sur leur site pour les périodes d'ouverture.",
     },
     {
-      company: 'MTN Bénin',
-      logoColor: 'bg-accent',
-      title: 'Stage Académique d\'Orientation (Génie Logiciel / Réseaux)',
-      duration: '2 mois',
-      location: 'Cotonou, Bénin',
-      tag: 'Télécoms',
-      desc: 'Intégrez la direction technique pour observer et comprendre l\'exploitation d\'un réseau télécom d\'envergure et l\'architecture cloud.',
-      perks: 'Mentorat individuel par un ingénieur senior',
-      requirements: 'Étudiants en tronc commun informatique/télécoms.'
+      title: 'Les entreprises de ta ville',
+      tag: 'Candidature spontanée',
+      desc: "La majorité des stages d'observation au Bénin se décrochent par candidature spontanée : cible des entreprises locales dans le domaine qui t'intéresse et dépose ton dossier directement.",
     },
     {
-      company: 'Isocel Telecom',
-      logoColor: 'bg-cyan-500',
-      title: 'Stage Découverte Systèmes et Réseaux',
-      duration: '3 mois',
-      location: 'Cotonou, Bénin',
-      tag: 'Réseaux & Fibres',
-      desc: 'Accompagnez les équipes de déploiement de la fibre optique et de maintenance des serveurs d\'accès internet résidentiels.',
-      perks: 'Expérience terrain pratique',
-      requirements: 'Bacheliers motivés des séries techniques (F3, E) ou informatique.'
+      title: 'Ton réseau personnel',
+      tag: 'Bouche-à-oreille',
+      desc: "Parents, enseignants, anciens élèves de ton lycée : le réseau personnel reste l'un des moyens les plus efficaces de trouver un premier stage au Bénin.",
     },
     {
-      company: 'StartUp Bénin Hub',
-      logoColor: 'bg-purple-500',
-      title: 'Stage d\'Assistant Communication Digitale',
-      duration: '3 mois',
-      location: 'Calavi (Akassato / Zogbadjè), Bénin',
-      tag: 'Marketing',
-      desc: 'Animation de communautés, création de visuels simples avec Canva et rédaction d\'articles d\'orientation pour les bacheliers.',
-      perks: 'Télétravail partiel + Bonus à la performance',
-      requirements: 'Excellente maîtrise du français et des réseaux sociaux.'
-    }
+      title: 'Le service orientation de ton université',
+      tag: 'Une fois inscrit(e)',
+      desc: "Une fois à l'université, les écoles professionnelles (EPAC, ENEAM, IUT...) ont souvent des partenariats entreprises pour les stages obligatoires du cursus.",
+    },
   ];
 
   const cvTips = [
@@ -81,19 +56,12 @@ export default function StagesPage({ setActivePage }: StagesPageProps) {
     }
   ];
 
-  const triggerApply = (company: string) => {
-    setAppliedCompany(company);
-    setTimeout(() => {
-      setAppliedCompany(null);
-    }, 4000);
-  };
-
   const generateCV = () => {
     if (!cvName || !cvMajor) return;
     setCvGenerated(true);
   };
 
-  const easeOutExpo = [0.16, 1, 0.3, 1];
+  const easeOutExpo = [0.16, 1, 0.3, 1] as const;
 
   return (
     <div className="bg-bg-main text-text-main py-10 min-h-screen selection:bg-accent/30 selection:text-black" id="stages-page-container">
@@ -156,69 +124,33 @@ export default function StagesPage({ setActivePage }: StagesPageProps) {
             <div className="lg:col-span-8 space-y-6">
               <h2 className="text-lg font-black text-text-main flex items-center gap-2 uppercase tracking-wide">
                 <Briefcase className="h-5 w-5 text-accent" />
-                Offres d'immersion post-bac
+                Où chercher un premier stage ?
               </h2>
+              <p className="text-xs text-text-main/50 font-medium max-w-2xl">
+                Nous ne publions pas encore d'offres de stage en direct sur la plateforme. En attendant, voici les pistes qui fonctionnent le mieux au Bénin pour un premier stage d'observation.
+              </p>
 
               <div className="space-y-6">
-                {internships.map((intern, idx) => (
+                {pistes.map((piste, idx) => (
                   <motion.div
                     whileTap={{ scale: 0.99 }}
                     key={idx}
                     className="group card-premium p-8 transition-all duration-300 flex flex-col sm:flex-row gap-6 items-start"
                   >
-                    {/* Brand Initial */}
-                    <div className={`h-12 w-12 rounded-2xl ${intern.logoColor} shrink-0 text-white flex items-center justify-center font-black text-xl shadow-md`}>
-                      {intern.company[0]}
+                    <div className="h-12 w-12 rounded-2xl bg-accent-light shrink-0 text-accent flex items-center justify-center shadow-md">
+                      <MapPin className="h-5 w-5" />
                     </div>
 
-                    {/* Body info */}
-                    <div className="space-y-3 grow">
-                      <div className="flex items-center justify-between flex-wrap gap-2">
-                        <span className="text-[10px] font-extrabold text-text-main/40 uppercase tracking-wider">{intern.company}</span>
-                        <span className="bg-accent-light text-accent font-black text-[9px] px-2.5 py-1 rounded-md uppercase tracking-widest">
-                          {intern.tag}
-                        </span>
-                      </div>
-
+                    <div className="space-y-2 grow">
+                      <span className="bg-accent-light text-accent font-black text-[9px] px-2.5 py-1 rounded-md uppercase tracking-widest">
+                        {piste.tag}
+                      </span>
                       <h3 className="text-base font-black text-black group-hover:text-accent transition-colors leading-snug">
-                        {intern.title}
+                        {piste.title}
                       </h3>
-
                       <p className="text-xs text-text-main/60 leading-relaxed font-medium">
-                        {intern.desc}
+                        {piste.desc}
                       </p>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 text-xs font-medium">
-                        <div>
-                          <span className="text-[9px] font-extrabold text-text-main/40 uppercase tracking-wider block">Durée & Lieu</span>
-                          <span className="font-extrabold text-text-main block mt-0.5">{intern.duration} • {intern.location}</span>
-                        </div>
-                        <div>
-                          <span className="text-[9px] font-extrabold text-text-main/40 uppercase tracking-wider block">Avantages</span>
-                          <span className="font-extrabold text-accent block mt-0.5">{intern.perks}</span>
-                        </div>
-                      </div>
-
-                      <div className="pt-4 border-t border-black/5 flex items-center justify-between flex-wrap gap-3">
-                        <span className="text-[10px] text-text-main/50 leading-tight font-medium">
-                          <span className="font-bold text-black uppercase">Critère :</span> {intern.requirements}
-                        </span>
-                        
-                        <div className="relative">
-                          <motion.button
-                            whileHover={{ scale: 1.04 }}
-                            whileTap={{ scale: 0.96 }}
-                            onClick={() => triggerApply(intern.company)}
-                            className={`px-4.5 py-2.5 rounded-full text-xs font-black transition-all cursor-pointer ${
-                              appliedCompany === intern.company 
-                                ? 'bg-emerald-500 text-white' 
-                                : 'bg-accent/10 hover:bg-accent hover:text-black text-accent'
-                            }`}
-                          >
-                            {appliedCompany === intern.company ? 'Candidature envoyée !' : 'Postuler en direct'}
-                          </motion.button>
-                        </div>
-                      </div>
                     </div>
                   </motion.div>
                 ))}
@@ -387,7 +319,7 @@ export default function StagesPage({ setActivePage }: StagesPageProps) {
                         <span>Recommencer</span>
                       </button>
                       <button
-                        onClick={() => alert("Impression PDF en cours de traitement...")}
+                        onClick={() => window.print()}
                         className="flex-1 bg-accent hover:bg-accent-hover text-black text-xs font-black py-2.5 rounded-full transition-all cursor-pointer flex items-center justify-center gap-1.5"
                       >
                         <Check className="h-4 w-4 stroke-$1" />

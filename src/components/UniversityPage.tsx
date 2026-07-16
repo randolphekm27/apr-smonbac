@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Calendar, Users, Landmark, MapPin, ArrowRight, 
-  ChevronRight, Award, Sparkles, Phone, Mail, BookOpen
+  Calendar, Landmark, MapPin, ArrowRight,
+  ChevronRight, Sparkles, Phone, Mail, BadgeCheck
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { University, School, Major } from '../types';
+import ImageWithFallback from './ImageWithFallback';
 
 type AppActivePage = 'accueil' | 'universites' | 'university-detail' | 'school-detail' | 'filiere-detail' | 'concours' | 'bourses' | 'stages' | 'actualites';
 
@@ -78,7 +79,7 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
     }
   };
 
-  const easeOutExpo = [0.16, 1, 0.3, 1];
+  const easeOutExpo = [0.16, 1, 0.3, 1] as const;
 
   return (
     <div className="bg-bg-main text-text-main py-10 min-h-screen selection:bg-accent/30 selection:text-black" id={`univ-detail-page-${university.id}`}>
@@ -111,11 +112,10 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
             className="lg:col-span-5"
           >
             <div className="rounded-[2.5rem] overflow-hidden border border-white p-2.5 bg-white/40 shadow-2xl h-64 group">
-              <img
-                src={university.banner_url || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=80'}
+              <ImageWithFallback
+                src={university.banner_url || university.logo_url}
                 alt={`Campus de ${university.nom}`}
                 className="w-full h-full object-cover rounded-4xl transition-transform duration-700 group-hover:scale-103"
-                referrerPolicy="no-referrer"
               />
             </div>
           </motion.div>
@@ -136,9 +136,9 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
             </div>
 
             <div className="flex flex-col items-center text-center pt-5 lg:pt-0 p-3">
-              <Users className="h-4.5 w-4.5 text-accent mb-2.5" />
-              <span className="text-xl font-black text-text-main">{university.stats_etudiants || '-'}</span>
-              <span className="text-[9px] text-text-main/40 font-extrabold uppercase mt-1 tracking-wider">Étudiants</span>
+              <BadgeCheck className="h-4.5 w-4.5 text-accent mb-2.5" />
+              <span className="text-xl font-black text-text-main">{university.statut || '-'}</span>
+              <span className="text-[9px] text-text-main/40 font-extrabold uppercase mt-1 tracking-wider">Statut</span>
             </div>
 
             <div className="flex flex-col items-center text-center pt-5 lg:pt-0 p-3">
@@ -289,10 +289,6 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
                         <p>{university.histoire}</p>
                       </div>
                     )}
-                    <p className="font-black text-black flex items-center gap-1.5 text-xs mt-6">
-                      <Award className="h-4.5 w-4.5 text-accent" />
-                      Diplômes reconnus au niveau national et certifiés par le CAMES.
-                    </p>
                   </div>
                 </div>
               )}
@@ -332,50 +328,46 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
               )}
 
               {activeTab === 'actualites' && (
-                <div className="rounded-[2.5rem] bg-white border border-black/5 p-8 md:p-12 space-y-6">
-                  <h3 className="text-lg font-black text-text-main">Actualités de l'Université</h3>
-                  <ul className="space-y-4">
-                    {[
-                      { date: '30 Juin 2026', title: 'Plan d\'orientation numérique 2026 opérationnel' },
-                      { date: '18 Juin 2026', title: 'Inauguration de nouveaux laboratoires d\'expérimentation scientifique' },
-                      { date: '05 Mai 2026', title: 'Renforcement des partenariats industriels pour l\'immersion professionnelle' }
-                    ].map((actu, idx) => (
-                      <li key={idx} className="flex gap-4 items-center border-b border-black/5 pb-4 last:border-b-0">
-                        <span className="text-[9px] font-black text-accent bg-accent-light px-2.5 py-1 rounded-md shrink-0 uppercase tracking-wider">
-                          {actu.date}
-                        </span>
-                        <span className="text-xs font-bold text-black hover:text-accent cursor-pointer">
-                          {actu.title}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="rounded-[2.5rem] bg-white border border-black/5 p-8 md:p-12 space-y-4">
+                  <h3 className="text-lg font-black text-text-main">Actualités de l'université</h3>
+                  <p className="text-xs text-text-main/60 leading-relaxed max-w-2xl font-medium">
+                    Nous ne publions pas encore de fil d'actualités propre à chaque université. Pour les communiqués et échéances officielles (portail Après Mon Bac, calendrier de classement, journées portes ouvertes), consulte directement le site du MESRS ou le rectorat de l'établissement.
+                  </p>
                 </div>
               )}
 
               {activeTab === 'contact' && (
                 <div className="rounded-[2.5rem] bg-white border border-black/5 p-8 md:p-12 space-y-6">
-                  <h3 className="text-lg font-black text-text-main">Contact & Localisation</h3>
+                  <h3 className="text-lg font-black text-text-main">Contact & localisation</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs text-text-main/60 leading-relaxed font-medium">
                     <div className="space-y-2">
-                      <span className="font-extrabold text-black block text-xs">📍 Adresse Physique</span>
-                      <p>{university.adresse || 'Information à venir'}</p>
+                      <span className="font-extrabold text-black block text-xs">📍 Ville</span>
+                      <p>{university.ville || university.adresse || 'Information à venir'}</p>
                     </div>
-                    <div className="space-y-2">
-                      <span className="font-extrabold text-black block text-xs">📞 Secrétariat Général</span>
-                      <p className="flex items-center gap-1">
-                        <Phone className="h-3.5 w-3.5 text-accent" />
-                        {university.contact_telephone || 'Information à venir'}
-                      </p>
-                    </div>
-                    <div className="space-y-2">
-                      <span className="font-extrabold text-black block text-xs">✉ Adresse Email</span>
-                      <p className="flex items-center gap-1">
-                        <Mail className="h-3.5 w-3.5 text-accent" />
-                        {university.contact_email || 'Information à venir'}
-                      </p>
-                    </div>
+                    {university.contact_telephone && (
+                      <div className="space-y-2">
+                        <span className="font-extrabold text-black block text-xs">📞 Secrétariat général</span>
+                        <p className="flex items-center gap-1">
+                          <Phone className="h-3.5 w-3.5 text-accent" />
+                          {university.contact_telephone}
+                        </p>
+                      </div>
+                    )}
+                    {university.contact_email && (
+                      <div className="space-y-2">
+                        <span className="font-extrabold text-black block text-xs">✉ Adresse email</span>
+                        <p className="flex items-center gap-1">
+                          <Mail className="h-3.5 w-3.5 text-accent" />
+                          {university.contact_email}
+                        </p>
+                      </div>
+                    )}
                   </div>
+                  {!university.contact_telephone && !university.contact_email && (
+                    <p className="text-[11px] text-text-main/40 font-medium pt-2 border-t border-black/5">
+                      Coordonnées précises non communiquées dans le guide officiel : contacte directement le rectorat ou la scolarité de l'établissement.
+                    </p>
+                  )}
                 </div>
               )}
             </motion.div>
