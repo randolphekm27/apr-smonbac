@@ -79,6 +79,41 @@ export default function FilierePage({ majorId, setNavigationState }: FilierePage
     }, 4000);
   };
 
+  // Helper to parse debouches formatted with '### Title \n description'
+  const parseDebouches = (text: string) => {
+    if (!text) return [];
+    if (text.includes('###')) {
+      const blocks = text.split('###').filter(b => b.trim() !== '');
+      return blocks.map(block => {
+        const lines = block.split('\n').map(l => l.trim()).filter(l => l !== '');
+        const title = lines[0];
+        const desc = lines.slice(1).join(' ');
+        return { title, desc };
+      });
+    }
+    return text.split('\n')
+      .map(d => d.replace(/^[-*•]\s*/, '').trim())
+      .filter(d => d !== '')
+      .map(d => ({ title: d, desc: '' }));
+  };
+
+  // Helper to parse standard text blocks with '### ' headings
+  const renderTextWithHeadings = (text: string | null | undefined) => {
+    if (!text) return null;
+    const lines = text.split('\n');
+    return lines.map((line, idx) => {
+      const trimmed = line.trim();
+      if (!trimmed) return <span key={idx} className="block h-2"></span>;
+      if (trimmed.startsWith('###')) {
+        return <span key={idx} className="block font-black text-black mt-3 mb-1 text-[13px]">{trimmed.replace(/^###\s*/, '')}</span>;
+      }
+      if (trimmed.startsWith('-') || trimmed.startsWith('•') || trimmed.startsWith('*')) {
+        return <span key={idx} className="block mb-1 pl-3 relative before:content-[''] before:absolute before:left-0 before:top-1.5 before:h-1.5 before:w-1.5 before:bg-accent/50 before:rounded-full">{trimmed.replace(/^[-*•]\s*/, '')}</span>;
+      }
+      return <span key={idx} className="block mb-2">{trimmed}</span>;
+    });
+  };
+
   const easeOutExpo = [0.16, 1, 0.3, 1] as const;
 
   return (
@@ -321,13 +356,13 @@ export default function FilierePage({ majorId, setNavigationState }: FilierePage
               {activeTab === 'presentation' && (
                 <div className="rounded-[2.5rem] bg-white border border-black/5 p-8 md:p-10 space-y-6 shadow-sm">
                   <h3 className="text-sm font-black text-text-main uppercase tracking-wider">Présentation de la formation</h3>
-                  <p className="text-xs text-text-main/60 leading-relaxed max-w-3xl font-medium whitespace-pre-line">
-                    {major.description || "Descriptif en cours de complément."}
-                  </p>
+                  <div className="text-xs text-text-main/60 leading-relaxed max-w-3xl font-medium">
+                    {renderTextWithHeadings(major.description) || "Descriptif en cours de complément."}
+                  </div>
                   {major.conditions_admission && (
                     <div className="pt-4 border-t border-black/5 space-y-2">
                       <span className="font-extrabold text-xs text-black block">Comment on y entre</span>
-                      <p className="text-[11px] text-text-main/50 leading-relaxed font-medium max-w-3xl whitespace-pre-line">{major.conditions_admission}</p>
+                      <div className="text-[11px] text-text-main/50 leading-relaxed font-medium max-w-3xl">{renderTextWithHeadings(major.conditions_admission)}</div>
                     </div>
                   )}
                 </div>
@@ -336,9 +371,9 @@ export default function FilierePage({ majorId, setNavigationState }: FilierePage
               {activeTab === 'competences' && (
                 <div className="rounded-[2.5rem] bg-white border border-black/5 p-8 md:p-10 space-y-6 shadow-sm">
                   <h3 className="text-sm font-black text-text-main uppercase tracking-wider">Compétences visées</h3>
-                  <p className="text-xs text-text-main/60 leading-relaxed max-w-3xl font-medium whitespace-pre-line">
-                    {major.competences_visees || "Informations en cours de complément."}
-                  </p>
+                  <div className="text-xs text-text-main/60 leading-relaxed max-w-3xl font-medium">
+                    {renderTextWithHeadings(major.competences_visees) || "Informations en cours de complément."}
+                  </div>
                 </div>
               )}
 
@@ -356,10 +391,13 @@ export default function FilierePage({ majorId, setNavigationState }: FilierePage
                   
                   {major.debouches ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {major.debouches.split('\n').filter(d => d.trim() !== '').map((debouche, i) => (
+                      {parseDebouches(major.debouches).map((debouche, i) => (
                         <div key={i} className="flex items-start gap-3 p-4 rounded-2xl bg-bg-main/40 border border-black/5 hover:border-accent/30 hover:bg-white hover:shadow-sm transition-all group">
                           <span className="shrink-0 mt-1 h-2 w-2 rounded-full bg-accent/40 group-hover:bg-accent transition-colors"></span>
-                          <span className="text-xs text-text-main/70 font-bold leading-relaxed">{debouche.replace(/^[-*•]\s*/, '').trim()}</span>
+                          <div>
+                            <span className="text-xs text-text-main/90 font-bold leading-relaxed block">{debouche.title}</span>
+                            {debouche.desc && <span className="text-[11px] text-text-main/50 font-medium mt-1.5 block leading-relaxed">{debouche.desc}</span>}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -374,9 +412,9 @@ export default function FilierePage({ majorId, setNavigationState }: FilierePage
               {activeTab === 'matieres' && (
                 <div className="rounded-[2.5rem] bg-white border border-black/5 p-8 md:p-10 space-y-6 shadow-sm">
                   <h3 className="text-sm font-black text-text-main uppercase tracking-wider">Programme d'études</h3>
-                  <p className="text-xs text-text-main/60 leading-relaxed max-w-3xl font-medium whitespace-pre-line">
-                    {major.programme_resume || "Le contenu détaillé du programme est à demander directement à l'établissement."}
-                  </p>
+                  <div className="text-xs text-text-main/60 leading-relaxed max-w-3xl font-medium">
+                    {renderTextWithHeadings(major.programme_resume) || "Le contenu détaillé du programme est à demander directement à l'établissement."}
+                  </div>
                   {major.matieres && major.matieres.length > 0 && (
                     <div className="flex flex-wrap gap-2 pt-2">
                       {major.matieres.map((subject, sIdx) => (
