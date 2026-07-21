@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Briefcase, FileText, Sparkles, Check, Trash, MapPin } from 'lucide-react';
+import ImageWithFallback from './ImageWithFallback';
+import { getDomainImage } from '../lib/domainImages';
 
 interface StagesPageProps {
   setActivePage: (page: any) => void;
@@ -82,9 +84,27 @@ export default function StagesPage({ setActivePage }: StagesPageProps) {
             <h1 className="text-3xl md:text-5xl font-black tracking-tight text-text-main leading-tight">
               Premiers Stages & Projets
             </h1>
-            <p className="text-sm text-text-main/50 max-w-2xl leading-relaxed font-medium">
+            <p className="text-sm text-text-main/60 max-w-2xl leading-relaxed font-medium">
               Trouvez des stages d'observation et d'immersion au Bénin. Apprenez à concevoir votre premier CV professionnel et décrochez votre première expérience pratique en entreprise.
             </p>
+          </div>
+        </motion.div>
+
+        {/* Bannière illustrative */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="relative w-full h-36 md:h-48 rounded-[2.5rem] overflow-hidden shadow-lg border border-white p-2 bg-white/40"
+        >
+          <div className="w-full h-full rounded-[2rem] overflow-hidden relative">
+            <ImageWithFallback
+              src={getDomainImage('blue')}
+              alt="Jeune professionnel en stage d'observation au Bénin"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/20 to-transparent" />
           </div>
         </motion.div>
 
@@ -101,7 +121,7 @@ export default function StagesPage({ setActivePage }: StagesPageProps) {
                   key={tab.id}
                   onClick={() => setSelectedTopic(tab.id as any)}
                   className={`px-5 py-3 text-xs font-bold relative transition-all duration-300 cursor-pointer rounded-xl ${
-                    isActive ? 'text-black font-extrabold' : 'text-text-main/50 hover:text-black font-semibold'
+                    isActive ? 'text-black font-extrabold' : 'text-text-main/60 hover:text-black font-semibold'
                   }`}
                 >
                   {isActive && (
@@ -126,7 +146,7 @@ export default function StagesPage({ setActivePage }: StagesPageProps) {
                 <Briefcase className="h-5 w-5 text-accent" />
                 Où chercher un premier stage ?
               </h2>
-              <p className="text-xs text-text-main/50 font-medium max-w-2xl">
+              <p className="text-xs text-text-main/60 font-medium max-w-2xl">
                 Nous ne publions pas encore d'offres de stage en direct sur la plateforme. En attendant, voici les pistes qui fonctionnent le mieux au Bénin pour un premier stage d'observation.
               </p>
 
@@ -205,7 +225,7 @@ export default function StagesPage({ setActivePage }: StagesPageProps) {
                       {idx + 1}
                     </div>
                     <h3 className="font-black text-sm text-text-main">{tip.title}</h3>
-                    <p className="text-xs text-text-main/50 leading-relaxed font-medium">{tip.desc}</p>
+                    <p className="text-xs text-text-main/60 leading-relaxed font-medium">{tip.desc}</p>
                   </motion.div>
                 ))}
               </div>
@@ -227,7 +247,7 @@ export default function StagesPage({ setActivePage }: StagesPageProps) {
                       <h3 className="text-base font-black text-black">Créateur de CV Rapide</h3>
                     </div>
 
-                    <p className="text-xs text-text-main/50 leading-relaxed font-medium">
+                    <p className="text-xs text-text-main/60 leading-relaxed font-medium">
                       Saisissez vos informations essentielles pour générer instantanément un modèle de CV minimaliste et moderne adapté aux recruteurs du Bénin.
                     </p>
 
@@ -276,7 +296,7 @@ export default function StagesPage({ setActivePage }: StagesPageProps) {
                     <div className="border-b border-black/10 pb-4 space-y-1 text-center">
                       <h4 className="text-base font-black text-black tracking-tight uppercase">{cvName}</h4>
                       <p className="text-xs text-accent font-bold">{cvMajor}</p>
-                      <span className="text-[10px] text-black/40 block">Cotonou, Bénin • email@adresse.bj</span>
+                      <span className="text-[10px] text-black/65 block">Cotonou, Bénin • email@adresse.bj</span>
                     </div>
 
                     {/* Resume sections */}
@@ -284,7 +304,7 @@ export default function StagesPage({ setActivePage }: StagesPageProps) {
                       <div className="space-y-1">
                         <span className="text-[9px] font-black uppercase text-accent tracking-widest block">Formation</span>
                         <p className="text-xs font-extrabold text-black">Baccalauréat Scientifique</p>
-                        <p className="text-[10px] text-black/50">Session de Juin 2026 • Mention Très Bien</p>
+                        <p className="text-[10px] text-black/60">Session de Juin 2026 • Mention Très Bien</p>
                       </div>
 
                       <div className="space-y-1 pt-2 border-t border-black/5">

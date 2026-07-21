@@ -234,9 +234,17 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-bg-main text-text-main flex flex-col justify-between selection:bg-accent/30 selection:text-black">
-      
+
+      {/* Lien d'évitement pour la navigation au clavier / lecteurs d'écran */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-xl focus:bg-accent focus:text-black focus:px-4 focus:py-3 focus:text-xs focus:font-black focus:shadow-xl"
+      >
+        Aller au contenu principal
+      </a>
+
       {/* Header element */}
-      <Header 
+      <Header
         activePage={activePage} 
         setActivePage={handleSimplePageChange} 
         onOpenSearch={() => setIsSearchOpen(true)} 
@@ -253,7 +261,7 @@ export default function App() {
       />
 
       {/* Main Pages router inside AnimatePresence */}
-      <main className="grow pb-24 md:pb-0">
+      <main id="main-content" className="grow pb-24 md:pb-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activePage}-${selectedUniversityId || ''}-${selectedSchoolId || ''}-${selectedMajorId || ''}`}
@@ -358,11 +366,11 @@ export default function App() {
 
               <IconComponent
                 className={`h-4.5 w-4.5 transition-transform duration-200 group-active:scale-95 ${
-                  isSelected ? 'text-accent stroke-$1' : 'text-text-main/50 group-hover:text-black'
+                  isSelected ? 'text-accent stroke-$1' : 'text-text-main/60 group-hover:text-black'
                 }`}
               />
               <span className={`text-[8px] mt-1 font-bold tracking-tight whitespace-nowrap transition-colors ${
-                isSelected ? 'text-black' : 'text-text-main/40 group-hover:text-black'
+                isSelected ? 'text-black' : 'text-text-main/65 group-hover:text-black'
               }`}>
                 {item.label}
               </span>
@@ -395,7 +403,7 @@ export default function App() {
             >
               {/* Search input header */}
               <div className="flex items-center gap-3 border-b border-black/5 px-5 py-4">
-                <Search className="h-5 w-5 text-black/40 shrink-0" />
+                <Search className="h-5 w-5 text-black/65 shrink-0" />
                 <input
                   type="text"
                   value={searchQuery}
@@ -434,11 +442,11 @@ export default function App() {
                               {item.type}
                             </span>
                           </div>
-                          <p className="text-[10px] text-text-main/50 line-clamp-1 group-hover:text-black/70">
+                          <p className="text-[10px] text-text-main/60 line-clamp-1 group-hover:text-black/70">
                             {item.desc}
                           </p>
                         </div>
-                        <ArrowRight className="h-4 w-4 text-text-main/30 group-hover:text-black group-hover:translate-x-1 transition-all" />
+                        <ArrowRight className="h-4 w-4 text-text-main/65 group-hover:text-black group-hover:translate-x-1 transition-all" />
                       </button>
                     ))}
                   </div>
@@ -449,7 +457,7 @@ export default function App() {
                     </div>
                     <div>
                       <h4 className="text-sm font-extrabold">Aucun résultat exact</h4>
-                      <p className="text-[11px] text-text-main/40 mt-1 max-w-xs mx-auto leading-relaxed">
+                      <p className="text-[11px] text-text-main/65 mt-1 max-w-xs mx-auto leading-relaxed">
                         Notre catalogue comprend toutes les universités publiques, instituts et filières d'orientation.
                       </p>
                     </div>
@@ -459,7 +467,7 @@ export default function App() {
                   <div className="space-y-3">
                     <div className="flex items-center gap-1.5 pl-2 mb-2">
                       <Sparkles className="h-3.5 w-3.5 text-accent" />
-                      <span className="text-[10px] font-extrabold text-text-main/40 uppercase tracking-wider">
+                      <span className="text-[10px] font-extrabold text-text-main/65 uppercase tracking-wider">
                         Recommandations d'Orientation
                       </span>
                     </div>
@@ -476,10 +484,10 @@ export default function App() {
                             </div>
                             <div>
                               <span className="text-xs font-bold text-black block">{item.title}</span>
-                              <span className="text-[9px] text-text-main/40 font-medium line-clamp-1">{item.desc}</span>
+                              <span className="text-[9px] text-text-main/65 font-medium line-clamp-1">{item.desc}</span>
                             </div>
                           </div>
-                          <div className="text-[10px] font-extrabold text-text-main/30 group-hover:text-black flex items-center gap-0.5">
+                          <div className="text-[10px] font-extrabold text-text-main/65 group-hover:text-black flex items-center gap-0.5">
                             <span>Ouvrir</span>
                             <ExternalLink className="h-3 w-3 shrink-0" />
                           </div>

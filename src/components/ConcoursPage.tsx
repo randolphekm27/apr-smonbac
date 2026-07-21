@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Award, BookOpen, AlertCircle, Search, ArrowRight, MapPin, Sparkles, GraduationCap } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import ImageWithFallback from './ImageWithFallback';
+import { getDomainImage } from '../lib/domainImages';
 
 interface ConcoursPageProps {
   setActivePage: (page: any) => void;
@@ -99,7 +101,7 @@ export default function ConcoursPage({ setActivePage }: ConcoursPageProps) {
             <h1 className="text-3xl md:text-5xl font-black tracking-tight text-text-main leading-none">
               Filières sur concours
             </h1>
-            <p className="text-sm text-text-main/50 max-w-2xl leading-relaxed font-medium">
+            <p className="text-sm text-text-main/60 max-w-2xl leading-relaxed font-medium">
               Certaines écoles publiques recrutent sur concours plutôt que par classement du bac. Voici les établissements concernés d'après le guide officiel du MESRS, avec leurs quotas de bourses.
             </p>
           </motion.div>
@@ -114,17 +116,35 @@ export default function ConcoursPage({ setActivePage }: ConcoursPageProps) {
             <AlertCircle className="h-5 w-5 text-accent shrink-0 mt-0.5" />
             <div className="space-y-1.5">
               <h4 className="text-xs font-black text-text-main">Calendrier des concours</h4>
-              <p className="text-[10px] text-text-main/50 leading-relaxed font-medium">
+              <p className="text-[10px] text-text-main/60 leading-relaxed font-medium">
                 Les dates précises changent chaque année. Le choix des filières se fait sur le portail <span className="font-bold text-accent">apresmonbac.bj</span>, l'inscription au concours lui-même auprès de l'établissement ou sur e-Services Bénin.
               </p>
             </div>
           </motion.div>
         </div>
 
+        {/* Bannière illustrative */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="relative w-full h-36 md:h-48 rounded-[2.5rem] overflow-hidden shadow-lg border border-white p-2 bg-white/40"
+        >
+          <div className="w-full h-full rounded-[2rem] overflow-hidden relative">
+            <ImageWithFallback
+              src={getDomainImage('indigo')}
+              alt="Salle d'examen pour un concours d'État au Bénin"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/20 to-transparent" />
+          </div>
+        </motion.div>
+
         {/* Search */}
         <div className="bg-white rounded-2xl border border-black/5 p-4 shadow-sm">
           <div className="relative w-full md:w-96 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-black/40 group-focus-within:text-accent transition-colors" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-black/65 group-focus-within:text-accent transition-colors" />
             <input
               type="text"
               placeholder="Rechercher une école ou une filière..."
@@ -138,7 +158,7 @@ export default function ConcoursPage({ setActivePage }: ConcoursPageProps) {
         {/* Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative min-h-75 items-start">
           {loading ? (
-            <div className="col-span-1 lg:col-span-2 text-center py-20 text-xs font-bold text-text-main/40">Chargement…</div>
+            <div className="col-span-1 lg:col-span-2 text-center py-20 text-xs font-bold text-text-main/65">Chargement…</div>
           ) : (
             <AnimatePresence mode="popLayout">
               {filtered.length > 0 ? (
@@ -150,11 +170,19 @@ export default function ConcoursPage({ setActivePage }: ConcoursPageProps) {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.97 }}
                     transition={{ duration: 0.3 }}
-                    className="group card-premium p-8 flex flex-col justify-between cursor-pointer"
+                    role="button"
+                    tabIndex={0}
+                    className="group card-premium p-8 flex flex-col justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                     onClick={() => setActivePage({ page: 'school-detail', universityId: item.universite_slug, schoolId: item.slug })}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setActivePage({ page: 'school-detail', universityId: item.universite_slug, schoolId: item.slug });
+                      }
+                    }}
                   >
                     <div className="space-y-3">
-                      <div className="flex items-center gap-2 text-[10px] text-text-main/40 font-bold uppercase tracking-wider">
+                      <div className="flex items-center gap-2 text-[10px] text-text-main/65 font-bold uppercase tracking-wider">
                         <GraduationCap className="h-3.5 w-3.5 text-accent" />
                         <span>{item.universite_nom}</span>
                       </div>
@@ -179,7 +207,7 @@ export default function ConcoursPage({ setActivePage }: ConcoursPageProps) {
                     </div>
 
                     <div className="mt-6 pt-5 border-t border-black/5 flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-xs font-bold text-text-main/50">
+                      <span className="flex items-center gap-1.5 text-xs font-bold text-text-main/60">
                         <MapPin className="h-4 w-4 text-accent" />
                         Voir l'école
                       </span>
@@ -196,7 +224,7 @@ export default function ConcoursPage({ setActivePage }: ConcoursPageProps) {
                 >
                   <span className="text-4xl block">🔍</span>
                   <h4 className="text-sm font-black">Aucune école ne correspond à ta recherche</h4>
-                  <p className="text-xs text-text-main/40 max-w-sm mx-auto font-medium">
+                  <p className="text-xs text-text-main/65 max-w-sm mx-auto font-medium">
                     Essaie un autre nom d'école, d'université ou de filière.
                   </p>
                 </motion.div>

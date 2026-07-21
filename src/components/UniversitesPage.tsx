@@ -84,7 +84,7 @@ export default function UniversitesPage({ setActivePage, setNavigationState }: U
           <h1 className="text-3xl md:text-5xl font-black tracking-tight text-text-main leading-tight">
             Les Hauts Lieux de Savoir du Bénin
           </h1>
-          <p className="text-sm text-text-main/50 max-w-2xl font-medium leading-relaxed">
+          <p className="text-sm text-text-main/60 max-w-2xl font-medium leading-relaxed">
             Découvrez les quatre grandes universités publiques de la République du Bénin. Explorez les campus d'excellence, les écoles d'ingénierie et de médecine, et choisissez l'environnement idéal pour propulser votre parcours d'avenir.
           </p>
         </motion.div>
@@ -134,8 +134,16 @@ export default function UniversitesPage({ setActivePage, setNavigationState }: U
                 variants={itemVariants}
                 whileTap={{ scale: 0.98 }}
                 key={univ.id}
+                role="button"
+                tabIndex={0}
                 onClick={() => handleUniversityClick(univ.slug)}
-                className="group card-premium overflow-hidden cursor-pointer flex flex-col h-full justify-between"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleUniversityClick(univ.slug);
+                  }
+                }}
+                className="group card-premium overflow-hidden cursor-pointer flex flex-col h-full justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 id={`large-univ-card-${univ.id}`}
               >
                 {/* Photo with beautiful overlay */}
@@ -156,7 +164,7 @@ export default function UniversitesPage({ setActivePage, setNavigationState }: U
                     <h3 className="text-sm font-black text-text-main group-hover:text-accent transition-colors leading-tight">
                       {univ.nom}
                     </h3>
-                    <p className="text-[11px] font-bold text-text-main/40 leading-tight">
+                    <p className="text-[11px] font-bold text-text-main/65 leading-tight">
                       {univ.nom}
                     </p>
                     <p className="text-xs text-text-main/60 leading-relaxed pt-2 line-clamp-3 font-medium">
@@ -167,11 +175,11 @@ export default function UniversitesPage({ setActivePage, setNavigationState }: U
                   <div className="grid grid-cols-2 gap-4 mt-6 pt-4 border-t border-black/5 text-center bg-bg-main/80 rounded-2xl p-3">
                     <div>
                       <span className="text-xs font-black text-text-main">{univ.stats_etudiants || '-'}</span>
-                      <span className="text-[9px] text-text-main/40 block uppercase font-bold tracking-tight mt-0.5">Étudiants</span>
+                      <span className="text-[9px] text-text-main/65 block uppercase font-bold tracking-tight mt-0.5">Étudiants</span>
                     </div>
                     <div>
                       <span className="text-xs font-black text-text-main">{univ.stats_ecoles || '-'}</span>
-                      <span className="text-[9px] text-text-main/40 block uppercase font-bold tracking-tight mt-0.5">Écoles</span>
+                      <span className="text-[9px] text-text-main/65 block uppercase font-bold tracking-tight mt-0.5">Écoles</span>
                     </div>
                   </div>
                 </div>
@@ -196,7 +204,7 @@ export default function UniversitesPage({ setActivePage, setNavigationState }: U
         >
           <div className="space-y-1.5 max-w-xl">
             <h4 className="text-sm font-black text-text-main">Vous hésitez encore entre plusieurs universités ?</h4>
-            <p className="text-xs text-text-main/50 font-medium leading-relaxed">
+            <p className="text-xs text-text-main/60 font-medium leading-relaxed">
               Explorez la fiche de la "Licence en Métier de l'Informatique" à l'EPITECH (Sèmè City) pour voir un exemple concret de matières, de débouchés et de compétences visées.
             </p>
           </div>

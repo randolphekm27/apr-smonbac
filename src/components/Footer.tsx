@@ -99,10 +99,10 @@ export default function Footer({ setActivePage }: FooterProps) {
           <div>
             <h4 className="text-xs font-extrabold tracking-wider text-black uppercase mb-4">Ressources</h4>
             <ul className="space-y-2.5 text-xs text-text-main/60">
-              <li><span className="hover:text-accent cursor-pointer transition-colors font-semibold" onClick={() => setActivePage('universites')}>Conseils d'orientation</span></li>
-              <li><span className="hover:text-accent cursor-pointer transition-colors font-semibold" onClick={() => setActivePage('bourses')}>Guides et Outils</span></li>
-              <li><span className="hover:text-accent cursor-pointer transition-colors font-semibold" onClick={() => setActivePage('accueil')}>FAQ Bacheliers</span></li>
-              <li><span className="hover:text-accent cursor-pointer transition-colors font-semibold" onClick={() => setActivePage('actualites')}>Blog Actualités</span></li>
+              <li><button type="button" className="hover:text-accent cursor-pointer transition-colors font-semibold text-left" onClick={() => setActivePage('universites')}>Conseils d'orientation</button></li>
+              <li><button type="button" className="hover:text-accent cursor-pointer transition-colors font-semibold text-left" onClick={() => setActivePage('bourses')}>Guides et Outils</button></li>
+              <li><button type="button" className="hover:text-accent cursor-pointer transition-colors font-semibold text-left" onClick={() => setActivePage('accueil')}>FAQ Bacheliers</button></li>
+              <li><button type="button" className="hover:text-accent cursor-pointer transition-colors font-semibold text-left" onClick={() => setActivePage('actualites')}>Blog Actualités</button></li>
             </ul>
           </div>
 
@@ -110,10 +110,11 @@ export default function Footer({ setActivePage }: FooterProps) {
           <div>
             <h4 className="text-xs font-extrabold tracking-wider text-black uppercase mb-4">Légal</h4>
             <ul className="space-y-2.5 text-xs text-text-main/60">
-              <li><span className="hover:text-accent cursor-pointer transition-colors font-semibold">Conditions d'utilisation</span></li>
-              <li><span className="hover:text-accent cursor-pointer transition-colors font-semibold">Politique de confidentialité</span></li>
-              <li><span className="hover:text-accent cursor-pointer transition-colors font-semibold">Mentions légales</span></li>
+              <li><span className="font-semibold">Conditions d'utilisation</span></li>
+              <li><span className="font-semibold">Politique de confidentialité</span></li>
+              <li><span className="font-semibold">Mentions légales</span></li>
             </ul>
+            <p className="text-[10px] text-text-main/60 font-medium pt-1">Documents légaux en cours de publication.</p>
           </div>
 
           {/* Column 5: Suivez-nous */}
@@ -122,29 +123,33 @@ export default function Footer({ setActivePage }: FooterProps) {
             <div className="flex items-center gap-3">
               <a
                 href="#"
+                aria-label="Facebook (bientôt disponible)"
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-bg-main border border-black/5 hover:bg-accent hover:text-black transition-all"
-                title="Facebook"
+                title="Facebook — bientôt disponible"
               >
                 <Facebook className="h-4 w-4" />
               </a>
               <a
                 href="#"
+                aria-label="Instagram (bientôt disponible)"
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-bg-main border border-black/5 hover:bg-accent hover:text-black transition-all"
-                title="Instagram"
+                title="Instagram — bientôt disponible"
               >
                 <Instagram className="h-4 w-4" />
               </a>
               <a
                 href="#"
+                aria-label="YouTube (bientôt disponible)"
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-bg-main border border-black/5 hover:bg-accent hover:text-black transition-all"
-                title="YouTube"
+                title="YouTube — bientôt disponible"
               >
                 <Youtube className="h-4 w-4" />
               </a>
               <a
                 href="#"
+                aria-label="LinkedIn (bientôt disponible)"
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-bg-main border border-black/5 hover:bg-accent hover:text-black transition-all"
-                title="LinkedIn"
+                title="LinkedIn — bientôt disponible"
               >
                 <Linkedin className="h-4 w-4" />
               </a>
@@ -161,7 +166,7 @@ export default function Footer({ setActivePage }: FooterProps) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-text-main/$1 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-main/40">
+        <div className="mt-16 pt-8 border-t border-text-main/$1 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-main/65">
           <p>© 2026 Après Mon Bac (Bénin). Tous droits réservés.</p>
           <p className="flex items-center gap-1">
             Conçu avec excellence pour les bacheliers du Bénin 🇧🇯
