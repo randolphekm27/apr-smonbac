@@ -124,6 +124,14 @@ export default function FilierePage({ majorId, setNavigationState }: FilierePage
     return `${amount.toLocaleString('fr-FR')} FCFA`;
   };
 
+  // Short teaser for the hero (first sentence only) so the full text isn't repeated
+  // verbatim in the "Présentation" tab just below.
+  const getTeaser = (text: string | null | undefined) => {
+    if (!text) return null;
+    const firstSentence = text.split(/(?<=[.!?])\s+/)[0];
+    return firstSentence.length < text.length ? firstSentence : text;
+  };
+
   return (
     <div className="bg-bg-main text-text-main py-10 min-h-screen selection:bg-accent/30 selection:text-black" id={`major-detail-page-${major.id}`}>
       <div className="mx-auto max-w-7xl px-6 space-y-12">
@@ -270,7 +278,7 @@ export default function FilierePage({ majorId, setNavigationState }: FilierePage
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-sm text-text-main/60 leading-relaxed max-w-3xl font-medium"
         >
-          {major.description || 'Information à venir'}
+          {getTeaser(major.description) || 'Information à venir'}
         </motion.p>
 
         {/* Coût annuel / financement, quand disponible */}
