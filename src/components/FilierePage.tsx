@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Heart, Share2, Award, Clock, GraduationCap, BookOpen,
-  ChevronRight, Sparkles, Wallet, Check
+  ChevronRight, Sparkles, Wallet, Check, Briefcase
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Major, School, University } from '../types';
@@ -321,13 +321,13 @@ export default function FilierePage({ majorId, setNavigationState }: FilierePage
               {activeTab === 'presentation' && (
                 <div className="rounded-[2.5rem] bg-white border border-black/5 p-8 md:p-10 space-y-6 shadow-sm">
                   <h3 className="text-sm font-black text-text-main uppercase tracking-wider">Présentation de la formation</h3>
-                  <p className="text-xs text-text-main/60 leading-relaxed max-w-3xl font-medium">
+                  <p className="text-xs text-text-main/60 leading-relaxed max-w-3xl font-medium whitespace-pre-line">
                     {major.description || "Descriptif en cours de complément."}
                   </p>
                   {major.conditions_admission && (
                     <div className="pt-4 border-t border-black/5 space-y-2">
                       <span className="font-extrabold text-xs text-black block">Comment on y entre</span>
-                      <p className="text-[11px] text-text-main/50 leading-relaxed font-medium max-w-3xl">{major.conditions_admission}</p>
+                      <p className="text-[11px] text-text-main/50 leading-relaxed font-medium max-w-3xl whitespace-pre-line">{major.conditions_admission}</p>
                     </div>
                   )}
                 </div>
@@ -336,25 +336,45 @@ export default function FilierePage({ majorId, setNavigationState }: FilierePage
               {activeTab === 'competences' && (
                 <div className="rounded-[2.5rem] bg-white border border-black/5 p-8 md:p-10 space-y-6 shadow-sm">
                   <h3 className="text-sm font-black text-text-main uppercase tracking-wider">Compétences visées</h3>
-                  <p className="text-xs text-text-main/60 leading-relaxed max-w-3xl font-medium">
+                  <p className="text-xs text-text-main/60 leading-relaxed max-w-3xl font-medium whitespace-pre-line">
                     {major.competences_visees || "Informations en cours de complément."}
                   </p>
                 </div>
               )}
 
               {activeTab === 'debouches' && (
-                <div className="rounded-[2.5rem] bg-white border border-black/5 p-8 md:p-10 space-y-4 shadow-sm">
-                  <h3 className="text-sm font-black text-text-main uppercase tracking-wider">Débouchés & carrières</h3>
-                  <p className="text-xs text-text-main/60 leading-relaxed max-w-2xl font-medium">
-                    {major.debouches || "Débouchés en cours de complément : renseigne-toi directement auprès de l'établissement."}
-                  </p>
+                <div className="rounded-[2.5rem] bg-white border border-black/5 p-8 md:p-10 space-y-6 shadow-sm">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="h-10 w-10 rounded-2xl bg-accent-light text-accent flex items-center justify-center">
+                      <Briefcase className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black text-text-main uppercase tracking-wider">Débouchés & Carrières</h3>
+                      <p className="text-[10px] text-text-main/40 font-bold uppercase tracking-wider">Les métiers qui s'offrent à toi</p>
+                    </div>
+                  </div>
+                  
+                  {major.debouches ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {major.debouches.split('\n').filter(d => d.trim() !== '').map((debouche, i) => (
+                        <div key={i} className="flex items-start gap-3 p-4 rounded-2xl bg-bg-main/40 border border-black/5 hover:border-accent/30 hover:bg-white hover:shadow-sm transition-all group">
+                          <span className="shrink-0 mt-1 h-2 w-2 rounded-full bg-accent/40 group-hover:bg-accent transition-colors"></span>
+                          <span className="text-xs text-text-main/70 font-bold leading-relaxed">{debouche.replace(/^[-*•]\s*/, '').trim()}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-text-main/60 leading-relaxed max-w-2xl font-medium">
+                      Débouchés en cours de complément : renseigne-toi directement auprès de l'établissement.
+                    </p>
+                  )}
                 </div>
               )}
 
               {activeTab === 'matieres' && (
                 <div className="rounded-[2.5rem] bg-white border border-black/5 p-8 md:p-10 space-y-6 shadow-sm">
                   <h3 className="text-sm font-black text-text-main uppercase tracking-wider">Programme d'études</h3>
-                  <p className="text-xs text-text-main/60 leading-relaxed max-w-3xl font-medium">
+                  <p className="text-xs text-text-main/60 leading-relaxed max-w-3xl font-medium whitespace-pre-line">
                     {major.programme_resume || "Le contenu détaillé du programme est à demander directement à l'établissement."}
                   </p>
                   {major.matieres && major.matieres.length > 0 && (
