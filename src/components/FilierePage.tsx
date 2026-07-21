@@ -218,7 +218,7 @@ export default function FilierePage({ majorId, setNavigationState }: FilierePage
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.35, ease: easeOutExpo }}
-            className="rounded-[2.5rem] bg-gradient-to-br from-accent/5 to-transparent border border-accent/10 p-8 shadow-sm space-y-6"
+            className="rounded-[2.5rem] bg-linear-to-br from-accent/5 to-transparent border border-accent/10 p-8 shadow-sm space-y-6"
           >
             <div className="flex items-center gap-2.5">
               <Award className="h-6 w-6 text-accent" />
@@ -309,7 +309,7 @@ export default function FilierePage({ majorId, setNavigationState }: FilierePage
         </div>
 
         {/* Dynamic tabs content area */}
-        <div className="min-h-[250px]">
+        <div className="min-h-62.5">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -393,7 +393,7 @@ export default function FilierePage({ majorId, setNavigationState }: FilierePage
                 id={`major-school-offering-${school.id}`}
               >
                 <div className="flex items-center gap-4">
-                  <div className={`h-12 w-12 rounded-2xl bg-blue-50 text-blue-600 border-blue-100 flex items-center justify-center font-black text-sm shrink-0 border border-black/5 shadow-inner uppercase`}>
+                  <div className={`h-12 w-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-black text-sm shrink-0 border border-black/5 shadow-inner uppercase`}>
                     {school.nom.substring(0,3)}
                   </div>
                   <div className="space-y-0.5">

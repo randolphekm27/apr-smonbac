@@ -251,7 +251,7 @@ export default function SchoolPage({ schoolId, setNavigationState }: SchoolPageP
                 </p>
               </div>
               <div className="h-32 bg-neutral-100 flex flex-col items-center justify-center p-4 text-center space-y-2 relative">
-                <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#19181A_1px,transparent_1px)] [background-size:16px_16px]" />
+                <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#19181A_1px,transparent_1px)] bg-size-[16px_16px]" />
                 <div className="h-10 w-10 rounded-full bg-accent/10 text-accent flex items-center justify-center text-sm relative z-10">
                   📍
                 </div>

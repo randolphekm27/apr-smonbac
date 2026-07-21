@@ -3,6 +3,9 @@ import { GraduationCap } from 'lucide-react';
 
 interface ImageWithFallbackProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackIcon?: React.ReactNode;
+  src?: string | null;
+  alt?: string;
+  className?: string;
 }
 
 // <img> qui bascule sur un joli dégradé + icône si l'image manque ou ne charge pas,
@@ -12,7 +15,7 @@ export default function ImageWithFallback({ fallbackIcon, className, src, alt, .
 
   if (errored || !src) {
     return (
-      <div className={`flex items-center justify-center bg-gradient-to-br from-accent/25 via-accent/10 to-neutral-100 text-accent/60 ${className || ''}`}>
+      <div className={`flex items-center justify-center bg-linear-to-br from-accent/25 via-accent/10 to-neutral-100 text-accent/60 ${className || ''}`}>
         {fallbackIcon || <GraduationCap className="h-10 w-10" strokeWidth={1.5} />}
       </div>
     );
@@ -20,7 +23,7 @@ export default function ImageWithFallback({ fallbackIcon, className, src, alt, .
 
   return (
     <img
-      src={src}
+      src={src || undefined}
       alt={alt}
       className={className}
       referrerPolicy="no-referrer"

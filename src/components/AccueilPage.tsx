@@ -134,7 +134,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
       {/* 1. HERO SECTION */}
       <section className="relative mx-auto max-w-7xl px-6 pt-10 pb-16 md:py-24">
         {/* Soft elegant background live ambient light */}
-        <div className="absolute top-0 right-1/4 -z-20 h-[500px] w-[500px] rounded-full bg-linear-to-tr from-accent/10 to-yellow-200/5 blur-3xl opacity-60 animate-pulse duration-8000" />
+        <div className="absolute top-0 right-1/4 -z-20 h-125 w-125 rounded-full bg-linear-to-tr from-accent/10 to-yellow-200/5 blur-3xl opacity-60 animate-pulse duration-8000" />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column - Framer-motion staggered text reveal */}
@@ -271,7 +271,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
               initial={{ opacity: 0, scale: 1.08, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 1, ease: easeOutExpo, delay: 0.2 }}
-              className="relative w-full max-w-[370px] aspect-$1/$2 rounded-[2.5rem] p-3.5 border border-white bg-white/40 shadow-2xl backdrop-blur-sm overflow-hidden group"
+              className="relative w-full max-w-92.5 aspect-$1/$2 rounded-[2.5rem] p-3.5 border border-white bg-white/40 shadow-2xl backdrop-blur-sm overflow-hidden group"
             >
               <div className="w-full h-full rounded-4xl overflow-hidden relative">
                 <ImageWithFallback
@@ -427,7 +427,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
         className="mx-auto max-w-7xl px-6 py-12"
       >
         <div className="rounded-[2.5rem] bg-text-main text-white p-8 md:p-16 lg:p-20 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 h-[450px] w-[450px] rounded-full bg-accent/5 blur-3xl" />
+          <div className="absolute top-0 right-0 h-112.5 w-112.5 rounded-full bg-accent/5 blur-3xl" />
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-6 space-y-12 relative">
