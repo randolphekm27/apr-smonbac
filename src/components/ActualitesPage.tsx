@@ -105,7 +105,7 @@ Pour ces filières, les candidats DEAT sont évalués sur les trois matières é
         </div>
 
         {/* News Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative min-h-[300px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative min-h-75">
           <AnimatePresence mode="popLayout">
             {guides.map(item => (
               <motion.div

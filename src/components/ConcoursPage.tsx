@@ -136,7 +136,7 @@ export default function ConcoursPage({ setActivePage }: ConcoursPageProps) {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative min-h-[300px] items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative min-h-75 items-start">
           {loading ? (
             <div className="col-span-1 lg:col-span-2 text-center py-20 text-xs font-bold text-text-main/40">Chargement…</div>
           ) : (

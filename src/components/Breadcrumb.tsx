@@ -131,7 +131,7 @@ export default function Breadcrumb({
               )}
 
               {/* Level 3: Major Detail (if navigating inside school/university context) */}
-              {majorId && majorName && (
+              {schoolId && majorId && majorName && (
                 <>
                   <ChevronRight className="h-3.5 w-3.5 text-text-main/30 shrink-0" />
                   <span className="text-black font-extrabold" id={`breadcrumb-major-${majorId}`}>

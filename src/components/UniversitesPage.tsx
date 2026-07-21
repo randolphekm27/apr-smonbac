@@ -197,7 +197,7 @@ export default function UniversitesPage({ setActivePage, setNavigationState }: U
           <div className="space-y-1.5 max-w-xl">
             <h4 className="text-sm font-black text-text-main">Vous hésitez encore entre plusieurs universités ?</h4>
             <p className="text-xs text-text-main/50 font-medium leading-relaxed">
-              Explorez la fiche de la "Licence en Métier de l'Informatique" à l'IFRI (UAC) pour voir un exemple concret de matières, de débouchés et de compétences visées.
+              Explorez la fiche de la "Licence en Métier de l'Informatique" à l'EPITECH (Sèmè City) pour voir un exemple concret de matières, de débouchés et de compétences visées.
             </p>
           </div>
           <motion.button

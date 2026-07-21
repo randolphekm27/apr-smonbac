@@ -98,8 +98,8 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
         </motion.div>
 
         {/* Tabs with slide active backplate */}
-        <div className="flex justify-center">
-          <div className="flex whitespace-nowrap bg-bg-main/50 p-1.5 rounded-2xl border border-black/5">
+        <div className="overflow-x-auto scrollbar-none -mx-6 px-6 sm:mx-0 sm:px-0 sm:flex sm:justify-center">
+          <div className="flex whitespace-nowrap bg-bg-main/50 p-1.5 rounded-2xl border border-black/5 w-max">
             {[
               { id: 'national', label: 'Allocations nationales (Bénin)' },
               { id: 'cooperation', label: 'Bourses de coopération' }

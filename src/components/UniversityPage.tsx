@@ -184,7 +184,7 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
         </div>
 
         {/* Animated Tabs Content */}
-        <div className="min-h-[400px]">
+        <div className="min-h-100">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
