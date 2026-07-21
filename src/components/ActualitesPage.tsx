@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Share2, Megaphone, X, Check, ExternalLink, BookOpen } from 'lucide-react';
+import ImageWithFallback from './ImageWithFallback';
+import { getDomainImage } from '../lib/domainImages';
 
 interface ActualitesPageProps {
   setActivePage: (page: any) => void;
@@ -90,9 +92,27 @@ Pour ces filières, les candidats DEAT sont évalués sur les trois matières é
             <h1 className="text-3xl md:text-5xl font-black tracking-tight text-text-main leading-tight">
               Comprendre le système d'orientation
             </h1>
-            <p className="text-sm text-text-main/50 max-w-2xl leading-relaxed font-medium">
+            <p className="text-sm text-text-main/60 max-w-2xl leading-relaxed font-medium">
               Nous ne publions pas encore de fil d'actualités en direct. En attendant, voici des explications sourcées du guide officiel du MESRS pour t'aider à mieux comprendre le fonctionnement du classement, des bourses et des concours.
             </p>
+          </div>
+        </motion.div>
+
+        {/* Bannière illustrative */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="relative w-full h-36 md:h-48 rounded-[2.5rem] overflow-hidden shadow-lg border border-white p-2 bg-white/40"
+        >
+          <div className="w-full h-full rounded-[2rem] overflow-hidden relative">
+            <ImageWithFallback
+              src={getDomainImage('purple')}
+              alt="Bachelier consultant le guide d'orientation universitaire"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/20 to-transparent" />
           </div>
         </motion.div>
 
@@ -137,7 +157,7 @@ Pour ces filières, les candidats DEAT sont évalués sur les trois matières é
                 </div>
 
                 <div className="pt-5 border-t border-black/5 flex items-center justify-between mt-5">
-                  <span className="text-[10px] font-bold text-text-main/40 uppercase tracking-wider">
+                  <span className="text-[10px] font-bold text-text-main/65 uppercase tracking-wider">
                     Par <span className="text-black font-black">Après Mon Bac</span>
                   </span>
 

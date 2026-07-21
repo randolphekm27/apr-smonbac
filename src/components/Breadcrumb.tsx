@@ -57,7 +57,7 @@ export default function Breadcrumb({
   return (
     <div className="bg-bg-main py-4 border-b border-text-main/$1" id="breadcrumb-navigation-container">
       <div className="mx-auto max-w-7xl px-6">
-        <nav className="flex items-center gap-2 text-xs font-bold text-text-main/50 flex-wrap">
+        <nav className="flex items-center gap-2 text-xs font-bold text-text-main/60 flex-wrap">
           {/* Home Node */}
           <button
             onClick={() => navigateTo('accueil')}
@@ -68,7 +68,7 @@ export default function Breadcrumb({
             <span>Accueil</span>
           </button>
 
-          <ChevronRight className="h-3.5 w-3.5 text-text-main/30 shrink-0" />
+          <ChevronRight className="h-3.5 w-3.5 text-text-main/65 shrink-0" />
 
           {/* Actualités / Concours / Bourses / Stages specific breadcrumbs */}
           {activePage === 'actualites' && (
@@ -101,7 +101,7 @@ export default function Breadcrumb({
               {/* Level 1: University Detail */}
               {universityId && univName && (
                 <>
-                  <ChevronRight className="h-3.5 w-3.5 text-text-main/30 shrink-0" />
+                  <ChevronRight className="h-3.5 w-3.5 text-text-main/65 shrink-0" />
                   <button
                     onClick={() => navigateTo('university-detail', universityId)}
                     className={`hover:text-black transition-colors cursor-pointer ${
@@ -117,7 +117,7 @@ export default function Breadcrumb({
               {/* Level 2: School Detail */}
               {schoolId && schoolName && (
                 <>
-                  <ChevronRight className="h-3.5 w-3.5 text-text-main/30 shrink-0" />
+                  <ChevronRight className="h-3.5 w-3.5 text-text-main/65 shrink-0" />
                   <button
                     onClick={() => navigateTo('school-detail', universityId, schoolId)}
                     className={`hover:text-black transition-colors cursor-pointer ${
@@ -133,7 +133,7 @@ export default function Breadcrumb({
               {/* Level 3: Major Detail (if navigating inside school/university context) */}
               {schoolId && majorId && majorName && (
                 <>
-                  <ChevronRight className="h-3.5 w-3.5 text-text-main/30 shrink-0" />
+                  <ChevronRight className="h-3.5 w-3.5 text-text-main/65 shrink-0" />
                   <span className="text-black font-extrabold" id={`breadcrumb-major-${majorId}`}>
                     {majorName}
                   </span>
@@ -143,7 +143,7 @@ export default function Breadcrumb({
               {/* Direct Major Detail (e.g. from general search/explore, without school context) */}
               {activePage === 'filiere-detail' && !schoolId && majorId && majorName && (
                 <>
-                  <ChevronRight className="h-3.5 w-3.5 text-text-main/30 shrink-0" />
+                  <ChevronRight className="h-3.5 w-3.5 text-text-main/65 shrink-0" />
                   <span className="text-black font-extrabold" id={`breadcrumb-major-direct-${majorId}`}>
                     {majorName}
                   </span>

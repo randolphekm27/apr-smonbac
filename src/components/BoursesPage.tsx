@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, Globe, GraduationCap, HelpCircle, FileText, Sparkles, ExternalLink } from 'lucide-react';
+import ImageWithFallback from './ImageWithFallback';
+import { getDomainImage } from '../lib/domainImages';
 
 interface BoursesPageProps {
   setActivePage: (page: any) => void;
@@ -92,9 +94,27 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
           <h1 className="text-3xl md:text-5xl font-black tracking-tight text-text-main leading-tight">
             Bourses & aides aux études
           </h1>
-          <p className="text-sm text-text-main/50 font-medium leading-relaxed">
+          <p className="text-sm text-text-main/60 font-medium leading-relaxed">
             Au Bénin, l'attribution des bourses se fait par classement national après le bac, filière par filière — pas de dossier de demande séparé. Les montants exacts et les dates de campagne sont fixés chaque année par le Ministère : cette page explique le mécanisme, pas des chiffres figés.
           </p>
+        </motion.div>
+
+        {/* Bannière illustrative */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="relative w-full h-36 md:h-48 rounded-[2.5rem] overflow-hidden shadow-lg border border-white p-2 bg-white/40 max-w-4xl mx-auto"
+        >
+          <div className="w-full h-full rounded-[2rem] overflow-hidden relative">
+            <ImageWithFallback
+              src={getDomainImage('orange')}
+              alt="Étudiants béninois bénéficiaires d'une bourse d'études"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/20 to-transparent" />
+          </div>
         </motion.div>
 
         {/* Tabs with slide active backplate */}
@@ -110,7 +130,7 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`px-5 py-3 text-xs font-bold relative transition-all duration-300 cursor-pointer rounded-xl ${
-                    isActive ? 'text-black font-extrabold' : 'text-text-main/50 hover:text-black font-semibold'
+                    isActive ? 'text-black font-extrabold' : 'text-text-main/60 hover:text-black font-semibold'
                   }`}
                 >
                   {isActive && (
@@ -158,21 +178,21 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
                             {bourse.badge}
                           </span>
                         </div>
-                        <p className="text-xs text-text-main/40 font-bold mb-4">{bourse.sub}</p>
+                        <p className="text-xs text-text-main/65 font-bold mb-4">{bourse.sub}</p>
 
                         <div className="mb-4 bg-bg-main p-5 rounded-2xl text-xs font-medium border border-black/5">
-                          <span className="text-[9px] font-extrabold text-text-main/40 block uppercase tracking-wider">Ce que ça change</span>
+                          <span className="text-[9px] font-extrabold text-text-main/65 block uppercase tracking-wider">Ce que ça change</span>
                           <span className="font-extrabold text-accent text-sm mt-0.5 block">{bourse.amount}</span>
                         </div>
 
                         <div className="space-y-4">
                           <div>
-                            <span className="text-[9px] font-extrabold text-text-main/40 uppercase block tracking-wider">Qui l'obtient :</span>
+                            <span className="text-[9px] font-extrabold text-text-main/65 uppercase block tracking-wider">Qui l'obtient :</span>
                             <p className="text-xs text-text-main/60 leading-relaxed font-medium mt-1">{bourse.criteria}</p>
                           </div>
 
                           <div className="pt-2">
-                            <span className="text-[9px] font-extrabold text-text-main/40 uppercase block mb-2 tracking-wider">Comment ça se passe :</span>
+                            <span className="text-[9px] font-extrabold text-text-main/65 uppercase block mb-2 tracking-wider">Comment ça se passe :</span>
                             <ul className="space-y-1.5 text-xs text-text-main/60 font-medium">
                               {bourse.steps.map((step, sIdx) => (
                                 <li key={sIdx} className="flex gap-2">
@@ -186,7 +206,7 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
                       </motion.div>
                     ))}
 
-                    <p className="text-[11px] text-text-main/40 font-medium px-2">
+                    <p className="text-[11px] text-text-main/65 font-medium px-2">
                       Le nombre exact de places bourse et aide/FPP est fixé chaque année, filière par filière : retrouve les quotas actuels sur la fiche de chaque formation dans la rubrique Orientation.
                     </p>
                   </>
@@ -196,7 +216,7 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
                       <Globe className="h-5 w-5 text-accent" />
                       Bourses d'études à l'étranger
                     </h2>
-                    <p className="text-xs text-text-main/50 font-medium leading-relaxed">
+                    <p className="text-xs text-text-main/60 font-medium leading-relaxed">
                       Le Bénin a des accords de coopération avec plusieurs pays pour l'envoi d'étudiants méritants à l'étranger. Les places, montants et conditions varient chaque année : ce qui suit liste les partenariats connus, pas une offre figée.
                     </p>
 
@@ -240,7 +260,7 @@ export default function BoursesPage({ setActivePage }: BoursesPageProps) {
                 <FileText className="h-4.5 w-4.5 text-accent" />
                 Pièces généralement demandées
               </h3>
-              <p className="text-xs text-text-main/50 leading-relaxed mb-4 font-medium">
+              <p className="text-xs text-text-main/60 leading-relaxed mb-4 font-medium">
                 À confirmer auprès de l'université au moment de l'inscription, mais on te demandera à peu près toujours :
               </p>
               <ul className="space-y-3 text-xs text-text-main/70 font-medium">

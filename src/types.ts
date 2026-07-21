@@ -35,6 +35,7 @@ export interface School {
   theme_color: string | null;
   histoire: string | null;
   programmes_count: number | null;
+  photo_couverture_url: string | null;
 }
 
 export interface Major {
@@ -62,6 +63,46 @@ export interface Major {
     salary: string;
     themeColor: string;
   }[] | null;
+
+  // Contenu pédagogique détaillé (guide d'orientation 2025-2026)
+  objectifs_pedagogiques: string | null;
+  cours_principaux: { nom: string; semestre?: number; credits?: number }[] | null;
+  cours_optionnels: { nom: string }[] | null;
+  projets_typiques: string[] | null;
+
+  // Stages & insertion professionnelle
+  stage_obligatoire: boolean | null;
+  stage_duree: string | null;
+  stages_possibles: string | null;
+  entreprises_cibles: string[] | null;
+
+  // Rémunération estimée (FCFA)
+  salaire_debutant_min: number | null;
+  salaire_debutant_max: number | null;
+  salaire_5ans_min: number | null;
+  salaire_5ans_max: number | null;
+
+  // Poursuite d'études & reconnaissance
+  poursuite_etudes: string | null;
+  equivalence_internationale: string | null;
+
+  // Admission & coûts complémentaires
+  places_payantes: number | null;
+  places_totales: number | null;
+  frais_inscription: number | null;
+  frais_mensuel: number | null;
+
+  // Médias & découverte
+  photo_couverture_url: string | null;
+  video_presentation_url: string | null;
+  brochure_pdf_url: string | null;
+  mots_cles: string[] | null;
+
+  // Statistiques
+  niveau_difficulte: number | null;
+  note_moyenne: number | null;
+  nombre_avis: number | null;
+  genre_dominant: string | null;
 }
 
 export interface Testimonial {

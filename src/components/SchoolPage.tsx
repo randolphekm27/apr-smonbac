@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { 
-  Building, BookOpen, Clock, Award, Landmark, 
+import {
+  Building, BookOpen, Clock, Award, Landmark,
   MapPin, Phone, Mail, Sparkles, Compass, History, Info, ArrowRight
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { School, Major, University } from '../types';
+import ImageWithFallback from './ImageWithFallback';
+import { getDomainImage } from '../lib/domainImages';
 
 type AppActivePage = 'accueil' | 'universites' | 'university-detail' | 'school-detail' | 'filiere-detail' | 'concours' | 'bourses' | 'stages' | 'actualites';
 
@@ -74,12 +76,29 @@ export default function SchoolPage({ schoolId, setNavigationState }: SchoolPageP
   return (
     <div className="bg-bg-main text-text-main py-10 min-h-screen selection:bg-accent/30 selection:text-black" id={`school-detail-page-${school.id}`}>
       <div className="mx-auto max-w-7xl px-6 space-y-12">
-        
+
+        {/* Hero banner : identité visuelle par domaine (école n'a pas encore de photo dédiée) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: easeOutExpo }}
+          className="relative w-full h-40 md:h-56 rounded-[2.5rem] overflow-hidden shadow-lg border border-white p-2 bg-white/40"
+        >
+          <div className="w-full h-full rounded-[2rem] overflow-hidden relative">
+            <ImageWithFallback
+              src={school.photo_couverture_url || getDomainImage(school.theme_color)}
+              alt={`Illustration de ${school.nom}`}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/15 to-transparent" />
+          </div>
+        </motion.div>
+
         {/* Back navigation & Header */}
         <div className="space-y-4">
           <button
             onClick={() => setNavigationState({ page: 'university-detail', universityId: university?.slug || '' })}
-            className="inline-flex items-center gap-1 text-xs font-black text-black/50 hover:text-accent transition-colors cursor-pointer uppercase tracking-wider"
+            className="inline-flex items-center gap-1 text-xs font-black text-black/65 hover:text-accent transition-colors cursor-pointer uppercase tracking-wider"
           >
             ← Retour à l'université
           </button>
@@ -93,7 +112,7 @@ export default function SchoolPage({ schoolId, setNavigationState }: SchoolPageP
               <h1 className="text-3xl md:text-5xl font-black tracking-tight text-text-main leading-tight">
                 {school.nom}
               </h1>
-              <p className="text-xs text-text-main/40 font-bold uppercase tracking-wider">
+              <p className="text-xs text-text-main/65 font-bold uppercase tracking-wider">
                 Affilié à l'université : <span className="text-black font-black">{university?.nom}</span>
               </p>
             </div>
@@ -107,7 +126,7 @@ export default function SchoolPage({ schoolId, setNavigationState }: SchoolPageP
                 <span className="text-xl font-black text-text-main block leading-none">
                   {majors.length}
                 </span>
-                <span className="text-[9px] text-text-main/40 font-extrabold uppercase tracking-wider mt-1 block">
+                <span className="text-[9px] text-text-main/65 font-extrabold uppercase tracking-wider mt-1 block">
                   {majors.length > 1 ? 'Filières accréditées' : 'Filière accréditée'}
                 </span>
               </div>
@@ -144,7 +163,7 @@ export default function SchoolPage({ schoolId, setNavigationState }: SchoolPageP
                       <History className="h-4 w-4 text-accent" />
                       Historique de l'établissement
                     </h3>
-                    <p className="text-xs text-text-main/50 leading-relaxed font-medium">
+                    <p className="text-xs text-text-main/60 leading-relaxed font-medium">
                       {school.histoire}
                     </p>
                   </div>
@@ -159,7 +178,7 @@ export default function SchoolPage({ schoolId, setNavigationState }: SchoolPageP
                   <BookOpen className="h-5.5 w-5.5 text-accent" />
                   Catalogue des formations de l'école
                 </h2>
-                <p className="text-xs text-text-main/50 font-medium">
+                <p className="text-xs text-text-main/60 font-medium">
                   Explorez les diplômes de Licence officiels dispensés par l'établissement.
                 </p>
               </div>
@@ -169,13 +188,21 @@ export default function SchoolPage({ schoolId, setNavigationState }: SchoolPageP
                   <motion.div
                     whileTap={{ scale: 0.98 }}
                     key={major.id}
-                    onClick={() => setNavigationState({ 
-                      page: 'filiere-detail', 
-                      universityId: university?.slug || '', 
-                      schoolId: school.slug, 
-                      majorId: major.slug 
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setNavigationState({
+                      page: 'filiere-detail',
+                      universityId: university?.slug || '',
+                      schoolId: school.slug,
+                      majorId: major.slug
                     })}
-                    className="group card-premium p-6 transition-all duration-300 flex flex-col justify-between cursor-pointer"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setNavigationState({ page: 'filiere-detail', universityId: university?.slug || '', schoolId: school.slug, majorId: major.slug });
+                      }
+                    }}
+                    className="group card-premium p-6 transition-all duration-300 flex flex-col justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                     id={`major-card-link-${major.id}`}
                   >
                     <div className="space-y-3.5">
@@ -183,12 +210,12 @@ export default function SchoolPage({ schoolId, setNavigationState }: SchoolPageP
                         <span className="rounded-md bg-accent/10 px-2 py-1 text-[9px] font-black text-accent uppercase tracking-wider">
                           Licence LMD
                         </span>
-                        <span className="text-[10px] text-black/40 font-bold">• {major.duree_etudes || '3 ans'}</span>
+                        <span className="text-[10px] text-black/65 font-bold">• {major.duree_etudes || '3 ans'}</span>
                       </div>
                       <h3 className="text-sm font-black text-text-main group-hover:text-accent transition-colors leading-tight">
                         {major.nom}
                       </h3>
-                      <p className="text-xs text-text-main/50 line-clamp-2 leading-relaxed font-medium">
+                      <p className="text-xs text-text-main/60 line-clamp-2 leading-relaxed font-medium">
                         {major.description || 'Information à venir'}
                       </p>
                     </div>
@@ -246,7 +273,7 @@ export default function SchoolPage({ schoolId, setNavigationState }: SchoolPageP
                   <MapPin className="h-4 w-4 text-accent" />
                   Rattachement
                 </h3>
-                <p className="text-[11px] text-text-main/50 mt-1 font-medium">
+                <p className="text-[11px] text-text-main/60 mt-1 font-medium">
                   Établissement de {university?.nom || 'l\'université'}
                 </p>
               </div>

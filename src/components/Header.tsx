@@ -42,7 +42,7 @@ export default function Header({ activePage, setActivePage, onOpenSearch }: Head
             <span className="text-lg font-extrabold tracking-tight text-text-main leading-tight group-hover:text-accent transition-colors duration-200">
               Après Mon Bac
             </span>
-            <span className="text-[10px] font-extrabold tracking-widest text-text-main/50 uppercase leading-none">
+            <span className="text-[10px] font-extrabold tracking-widest text-text-main/60 uppercase leading-none">
               BÉNIN ORIENTATION
             </span>
           </div>

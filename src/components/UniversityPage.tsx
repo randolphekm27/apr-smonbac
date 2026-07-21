@@ -100,7 +100,7 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
             <h1 className="text-3xl md:text-5.5xl font-black text-text-main leading-tight tracking-tight">
               {university.nom}
             </h1>
-            <p className="text-sm text-text-main/50 leading-relaxed max-w-xl font-medium">
+            <p className="text-sm text-text-main/60 leading-relaxed max-w-xl font-medium">
               {university.description || 'Information à venir'}
             </p>
           </motion.div>
@@ -132,25 +132,25 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
             <div className="flex flex-col items-center text-center p-3 lg:p-0">
               <Calendar className="h-4.5 w-4.5 text-accent mb-2.5" />
               <span className="text-xl font-black text-text-main">{university.annee_creation || '-'}</span>
-              <span className="text-[9px] text-text-main/40 font-extrabold uppercase mt-1 tracking-wider">Année de création</span>
+              <span className="text-[9px] text-text-main/65 font-extrabold uppercase mt-1 tracking-wider">Année de création</span>
             </div>
 
             <div className="flex flex-col items-center text-center pt-5 lg:pt-0 p-3">
               <BadgeCheck className="h-4.5 w-4.5 text-accent mb-2.5" />
               <span className="text-xl font-black text-text-main">{university.statut || '-'}</span>
-              <span className="text-[9px] text-text-main/40 font-extrabold uppercase mt-1 tracking-wider">Statut</span>
+              <span className="text-[9px] text-text-main/65 font-extrabold uppercase mt-1 tracking-wider">Statut</span>
             </div>
 
             <div className="flex flex-col items-center text-center pt-5 lg:pt-0 p-3">
               <Landmark className="h-4.5 w-4.5 text-accent mb-2.5" />
               <span className="text-xl font-black text-text-main">{schools.length}</span>
-              <span className="text-[9px] text-text-main/40 font-extrabold uppercase mt-1 tracking-wider">Écoles & Instituts d'élite</span>
+              <span className="text-[9px] text-text-main/65 font-extrabold uppercase mt-1 tracking-wider">Écoles & Instituts d'élite</span>
             </div>
 
             <div className="flex flex-col items-center text-center pt-5 lg:pt-0 p-3">
               <MapPin className="h-4.5 w-4.5 text-accent mb-2.5" />
               <span className="text-xl font-black text-text-main">{university.stats_campuses || '-'}</span>
-              <span className="text-[9px] text-text-main/40 font-extrabold uppercase mt-1 tracking-wider">Campus principaux</span>
+              <span className="text-[9px] text-text-main/65 font-extrabold uppercase mt-1 tracking-wider">Campus principaux</span>
             </div>
           </div>
         </motion.div>
@@ -165,7 +165,7 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as TabType)}
                   className={`px-5 py-3 text-xs font-bold relative transition-all duration-300 cursor-pointer rounded-xl ${
-                    isActive ? 'text-black font-extrabold' : 'text-text-main/50 hover:text-black font-semibold'
+                    isActive ? 'text-black font-extrabold' : 'text-text-main/60 hover:text-black font-semibold'
                   }`}
                   id={`univ-tab-trigger-${tab.id}`}
                 >
@@ -197,7 +197,7 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
                 <div className="space-y-8">
                   <div className="space-y-2">
                     <h3 className="text-xl font-black text-text-main">Écoles et Instituts d'Excellence</h3>
-                    <p className="text-xs text-text-main/50 font-medium">
+                    <p className="text-xs text-text-main/60 font-medium">
                       Découvrez les écoles spécialisées de {university.nom}. Cliquez sur une école pour en explorer les filières et l'identité.
                     </p>
                   </div>
@@ -211,8 +211,16 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
                         <motion.div
                           whileTap={{ scale: 0.98 }}
                           key={school.id}
-                          className="group card-premium p-7 transition-all duration-300 flex flex-col justify-between cursor-pointer"
+                          role="button"
+                          tabIndex={0}
+                          className="group card-premium p-7 transition-all duration-300 flex flex-col justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                           onClick={() => setNavigationState({ page: 'school-detail', universityId: university.slug, schoolId: school.slug })}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              setNavigationState({ page: 'school-detail', universityId: university.slug, schoolId: school.slug });
+                            }
+                          }}
                           id={`school-card-${school.id}`}
                         >
                           <div className="space-y-4">
@@ -234,7 +242,7 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
                             {/* Principales filières interactives */}
                             {schoolMajors.length > 0 && (
                               <div className="pt-2 space-y-1.5" onClick={(e) => e.stopPropagation()}>
-                                <span className="text-[9px] font-extrabold uppercase tracking-wider text-black/40 block">Formations dispensées</span>
+                                <span className="text-[9px] font-extrabold uppercase tracking-wider text-black/65 block">Formations dispensées</span>
                                 <div className="flex flex-wrap gap-1.5">
                                   {schoolMajors.slice(0, 3).map((major) => (
                                     <button
@@ -251,7 +259,7 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
                                     </button>
                                   ))}
                                   {schoolMajors.length > 3 && (
-                                    <span className="text-[9px] font-bold text-black/40 bg-black/5 px-2 py-1 rounded-md">
+                                    <span className="text-[9px] font-bold text-black/65 bg-black/5 px-2 py-1 rounded-md">
                                       +{schoolMajors.length - 3} de plus
                                     </span>
                                   )}
@@ -261,7 +269,7 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
                           </div>
 
                           <div className="mt-6 pt-4 border-t border-black/5 flex items-center justify-between text-xs">
-                            <span className="font-extrabold text-text-main/50 bg-bg-main px-3 py-1.5 rounded-lg text-[9px] tracking-wider uppercase">
+                            <span className="font-extrabold text-text-main/60 bg-bg-main px-3 py-1.5 rounded-lg text-[9px] tracking-wider uppercase">
                               {schoolMajors.length} {schoolMajors.length > 1 ? 'filières' : 'filière'}
                             </span>
                             <span className="flex items-center gap-1 text-xs font-black text-accent uppercase tracking-wider">
@@ -364,7 +372,7 @@ export default function UniversityPage({ universityId, setNavigationState }: Uni
                     )}
                   </div>
                   {!university.contact_telephone && !university.contact_email && (
-                    <p className="text-[11px] text-text-main/40 font-medium pt-2 border-t border-black/5">
+                    <p className="text-[11px] text-text-main/65 font-medium pt-2 border-t border-black/5">
                       Coordonnées précises non communiquées dans le guide officiel : contacte directement le rectorat ou la scolarité de l'établissement.
                     </p>
                   )}

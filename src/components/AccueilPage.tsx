@@ -197,7 +197,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
               className="relative max-w-xl group"
             >
               <div className="flex items-center rounded-full bg-white p-2 border border-black/5 shadow-xl shadow-black/5 backdrop-blur-lg focus-within:border-accent/50 focus-within:ring-4 focus-within:ring-accent/$1 transition-all duration-300">
-                <div className="pl-4 text-text-main/40 group-focus-within:text-accent transition-colors">
+                <div className="pl-4 text-text-main/65 group-focus-within:text-accent transition-colors">
                   <Search className="h-5 w-5 stroke-$1" />
                 </div>
                 <input
@@ -228,7 +228,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
               transition={{ duration: 0.8, delay: 0.6, ease: easeOutExpo }}
               className="flex flex-wrap items-center gap-2.5 text-xs"
             >
-              <span className="text-text-main/40 font-extrabold uppercase tracking-wide text-[10px]">Recherches fréquentes :</span>
+              <span className="text-text-main/65 font-extrabold uppercase tracking-wide text-[10px]">Recherches fréquentes :</span>
               {['Informatique', 'Médecine', 'Droit', 'Ingénierie', 'Gestion'].map((tag) => (
                 <motion.button
                   whileHover={{ scale: 1.05, y: -1 }}
@@ -304,7 +304,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
               <span className="text-3xl md:text-4xl font-black text-text-main">
                 <Counter value={213} />
               </span>
-              <span className="text-xs text-text-main/50 font-bold tracking-tight mt-1.5 uppercase">Filières d'Orientation</span>
+              <span className="text-xs text-text-main/60 font-bold tracking-tight mt-1.5 uppercase">Filières d'Orientation</span>
             </div>
 
             <div className="flex flex-col items-center text-center pt-6 lg:pt-0 p-2">
@@ -317,7 +317,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
               <span className="text-3xl md:text-4xl font-black text-text-main">
                 <Counter value={4} />
               </span>
-              <span className="text-xs text-text-main/50 font-bold tracking-tight mt-1.5 uppercase">Universités publiques</span>
+              <span className="text-xs text-text-main/60 font-bold tracking-tight mt-1.5 uppercase">Universités publiques</span>
             </div>
 
             <div className="flex flex-col items-center text-center pt-6 lg:pt-0 p-2">
@@ -330,7 +330,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
               <span className="text-3xl md:text-4xl font-black text-text-main">
                 <Counter value={64} />
               </span>
-              <span className="text-xs text-text-main/50 font-bold tracking-tight mt-1.5 uppercase">Écoles & Instituts</span>
+              <span className="text-xs text-text-main/60 font-bold tracking-tight mt-1.5 uppercase">Écoles & Instituts</span>
             </div>
 
             <div className="flex flex-col items-center text-center pt-6 lg:pt-0 p-2">
@@ -343,7 +343,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
               <span className="text-3xl md:text-4xl font-black text-text-main">
                 <Counter value={6670} />
               </span>
-              <span className="text-xs text-text-main/50 font-bold tracking-tight mt-1.5 uppercase">Places boursières (guide 2025-2026)</span>
+              <span className="text-xs text-text-main/60 font-bold tracking-tight mt-1.5 uppercase">Places boursières (guide 2025-2026)</span>
             </div>
           </div>
         </motion.div>
@@ -359,7 +359,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
       >
         <div className="text-center space-y-3 mb-12 animate-fade-in">
           <h2 className="text-3xl font-black tracking-tight text-text-main">Que recherchez-vous ?</h2>
-          <p className="text-sm text-text-main/50 font-medium">Naviguez facilement au cœur des parcours d'avenir au Bénin.</p>
+          <p className="text-sm text-text-main/60 font-medium">Naviguez facilement au cœur des parcours d'avenir au Bénin.</p>
         </div>
 
         <motion.div 
@@ -397,6 +397,8 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
                   boxShadow: '0 20px 25px -5px rgba(25,24,26,0.05)'
                 }}
                 whileTap={{ scale: 0.98 }}
+                role="button"
+                tabIndex={0}
                 onClick={() => {
                   if (setNavigationState) {
                     setNavigationState({ page: item.page, majorId: (item as any).majorId });
@@ -404,14 +406,24 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
                     setActivePage(item.page);
                   }
                 }}
-                className="group flex flex-col items-center text-center p-7 bg-white rounded-4xl border border-black/5 shadow-sm transition-all duration-300 cursor-pointer"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    if (setNavigationState) {
+                      setNavigationState({ page: item.page, majorId: (item as any).majorId });
+                    } else {
+                      setActivePage(item.page);
+                    }
+                  }
+                }}
+                className="group flex flex-col items-center text-center p-7 bg-white rounded-4xl border border-black/5 shadow-sm transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 id={item.id}
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent-light text-accent group-hover:bg-accent group-hover:text-black transition-all duration-300 mb-6">
                   <Icon className="h-6 w-6 stroke-$1" />
                 </div>
                 <h3 className="text-sm font-black text-text-main mb-1.5">{item.title}</h3>
-                <p className="text-[11px] font-bold text-text-main/40 group-hover:text-black/60 transition-colors leading-relaxed">{item.desc}</p>
+                <p className="text-[11px] font-bold text-text-main/65 group-hover:text-black/60 transition-colors leading-relaxed">{item.desc}</p>
               </motion.div>
             );
           })}
@@ -517,7 +529,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
                   </div>
                   <div>
                     <span className="text-3xl font-black text-accent tracking-tight">78%</span>
-                    <span className="text-[9px] text-white/40 block mt-0.5">Moyenne nationale diplômés</span>
+                    <span className="text-[9px] text-white/55 block mt-0.5">Moyenne nationale diplômés</span>
                   </div>
                   <div className="flex items-end gap-1.5 h-8 pt-1">
                     {[30, 45, 35, 60, 50, 78, 65].map((h, i) => (
@@ -548,7 +560,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
             <h2 className="text-3xl font-black tracking-tight text-text-main">
               Les universités publiques du Bénin
             </h2>
-            <p className="text-sm text-text-main/50 font-medium">
+            <p className="text-sm text-text-main/60 font-medium">
               Découvrez les 4 pôles majeurs d'enseignement supérieur d'État.
             </p>
           </div>
@@ -573,6 +585,8 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
           {universities.map((univ) => (
             <motion.div
               key={univ.id}
+              role="button"
+              tabIndex={0}
               onClick={() => {
                 if (setNavigationState) {
                   setNavigationState({ page: 'university-detail', universityId: univ.slug });
@@ -580,7 +594,17 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
                   setActivePage('universites');
                 }
               }}
-              className="group card-premium overflow-hidden cursor-pointer flex flex-col h-full"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  if (setNavigationState) {
+                    setNavigationState({ page: 'university-detail', universityId: univ.slug });
+                  } else {
+                    setActivePage('universites');
+                  }
+                }
+              }}
+              className="group card-premium overflow-hidden cursor-pointer flex flex-col h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               id={`univ-card-home-${univ.id}`}
             >
               <div className="h-44 overflow-hidden relative">
@@ -598,11 +622,11 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
                   <h3 className="text-sm font-black text-text-main group-hover:text-accent transition-colors leading-tight">
                     {univ.nom}
                   </h3>
-                  <p className="text-xs text-text-main/50 mt-2.5 line-clamp-2 leading-relaxed font-medium">
+                  <p className="text-xs text-text-main/60 mt-2.5 line-clamp-2 leading-relaxed font-medium">
                     {univ.description || 'Information à venir'}
                   </p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-black/5 flex items-center justify-between text-[10px] font-extrabold text-text-main/40 group-hover:text-black uppercase tracking-wider transition-colors">
+                <div className="mt-6 pt-4 border-t border-black/5 flex items-center justify-between text-[10px] font-extrabold text-text-main/65 group-hover:text-black uppercase tracking-wider transition-colors">
                   <span>Tout savoir sur cette université</span>
                   <ChevronRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1 stroke-$1" />
                 </div>
@@ -641,7 +665,7 @@ export default function AccueilPage({ setActivePage, setNavigationState, onSearc
       >
         <div className="text-center space-y-3 mb-12">
           <h2 className="text-3xl font-black tracking-tight text-text-main">Des informations sourcées, pas des promesses</h2>
-          <p className="text-sm text-text-main/50 font-medium max-w-2xl mx-auto">Tout ce que tu lis ici vient du Guide d'information universitaire 2025-2026 du Ministère de l'Enseignement Supérieur.</p>
+          <p className="text-sm text-text-main/60 font-medium max-w-2xl mx-auto">Tout ce que tu lis ici vient du Guide d'information universitaire 2025-2026 du Ministère de l'Enseignement Supérieur.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
